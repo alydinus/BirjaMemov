@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
+
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -28,18 +29,18 @@ public class Subject {
     private String title;
 
     @Column(name = "lesson_name")
-    private String lesson_name;
+    private String lessonName;
 
     @Column(name = "hourly_pay")
-    private Integer hourly_pay;
+    private Integer hourlyPay;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "created_at")
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
     @Column(name = "is_active")
-    private Boolean is_active;
+    private Boolean isActive;
 
 }
