@@ -24,7 +24,7 @@ public class Tutor extends User {
   private Integer experienceYears;
 
   @OneToMany(mappedBy = "tutor")
-  private List<Image> images;
+  private List<Image> certificates;
 
   @OneToMany(mappedBy = "tutor")
   private List<Subject> subjects ;
