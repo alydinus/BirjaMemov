@@ -26,4 +26,7 @@ public class Tutor extends User {
   @OneToMany(mappedBy = "tutor")
   private List<Image> images;
 
+  @OneToMany(mappedBy = "tutor")
+  private List<Subject> subjects ;
+
 }

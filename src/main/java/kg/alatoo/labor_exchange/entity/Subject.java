@@ -12,6 +12,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "subjects")
 public class Subject {
 
     @Id
@@ -19,7 +20,9 @@ public class Subject {
     @Column(name = "id")
     private UUID id;
 
-    //raltion Many to one to tutor
+    @ManyToOne
+    @JoinColumn(name = "tutor_id", nullable = false)
+    private Tutor tutor;
 
     @Column(name = "title")
     private String title;
