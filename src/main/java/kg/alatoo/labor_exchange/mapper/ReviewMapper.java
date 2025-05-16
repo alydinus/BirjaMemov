@@ -10,22 +10,21 @@ import java.util.List;
 @Component
 public class ReviewMapper {
 
-    public ReviewResponse toResponse(Review review) {
-        ReviewResponse response = new ReviewResponse(
-                review.getId().toString(),
-                review.getTutor().getId().toString(),
-                review.getStudent().getId().toString(),
-                review.getRating(),
-                review.getComment(),
-                review.getCreatedAt());
-        return response;
-    }
-
-    public List<ReviewResponse> toResponses(List<Review> reviews) {
-        List<ReviewResponse> responses = new ArrayList<>();
-        for(Review review : reviews) {
-            responses.add(toResponse(review));
-        }
-        return responses;
-    }
+//    public ReviewResponse toResponse(Review review) {
+//      return new ReviewResponse(
+//              review.getId().toString(),
+//              review.getTutor().getId().toString(),
+//              review.getStudent().getId().toString(),
+//              review.getRating(),
+//              review.getComment(),
+//              review.getCreatedAt());
+//    }
+//
+//    public List<ReviewResponse> toResponses(List<Review> reviews) {
+//        List<ReviewResponse> responses = new ArrayList<>();
+//        for(Review review : reviews) {
+//            responses.add(toResponse(review));
+//        }
+//        return responses;
+//    }
 }
