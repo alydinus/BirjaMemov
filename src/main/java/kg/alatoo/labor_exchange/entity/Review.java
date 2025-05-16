@@ -1,40 +1,44 @@
 package kg.alatoo.labor_exchange.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import java.util.UUID;
+import lombok.Data;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "reviews")
 public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
-    private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "tutor_id", nullable = false)
-    private Tutor tutor;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "id")
+  private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+  @ManyToOne
+  @JoinColumn(name = "tutor_id", nullable = false)
+  private Tutor tutor;
 
-    @Column(name = "rating")
-    private Double rating;
+  @ManyToOne
+  @JoinColumn(name = "student_id", nullable = false)
+  private Student student;
 
-    @Column(name = "comment")
-    private String comment;
+  @Column(name = "rating")
+  private Double rating;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+  @Column(name = "comment")
+  private String comment;
+
+  @Column(name = "created_at")
+  private Timestamp createdAt;
 
 }
+
 

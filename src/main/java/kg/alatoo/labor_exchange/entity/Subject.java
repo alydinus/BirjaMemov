@@ -10,10 +10,10 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
+@Table(name = "subjects")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "subjects")
 public class Subject {
 
     @Id

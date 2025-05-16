@@ -20,22 +20,23 @@ public class TutorController {
 
   @GetMapping
   public ResponseEntity<List<TutorResponse>> getTutors() {
-    return ResponseEntity.ok("Tutors");
+    return null;
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<TutorResponse> getTutorById(@PathVariable UUID id) {
-    return ResponseEntity.ok("Tutor");
+    return null;
+
   }
 
   @PostMapping
   public ResponseEntity<TutorResponse> createTutor() {
-    return ResponseEntity.ok("Tutor");
+    return null;
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<TutorResponse> updateTutor(@PathVariable UUID id) {
-    return ResponseEntity.ok("Tutor");
+    return null;
   }
 
   @DeleteMapping("/{id}")
