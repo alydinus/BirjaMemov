@@ -7,9 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
 import kg.alatoo.labor_exchange.config.StorageProperties;
+import kg.alatoo.labor_exchange.entity.User;
 import kg.alatoo.labor_exchange.exception.exceptions.StorageException;
 import kg.alatoo.labor_exchange.exception.exceptions.StorageFileNotFoundException;
 import kg.alatoo.labor_exchange.service.StorageService;
@@ -59,6 +63,62 @@ public class FileSystemStorageService implements StorageService {
     }
   }
 
+  public void storeProfilePicture(String userId, MultipartFile multipartFile) {
+    try {
+      if (multipartFile.isEmpty()) {
+        throw new StorageException("Failed to store empty file.");
+      }
+
+      Path destinationFile = this.rootLocation.resolve(
+              Paths.get("profile_pictures").resolve(userId))
+          .normalize().toAbsolutePath();
+
+      if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath().normalize())) {
+        throw new StorageException(
+            "Cannot store file outside current directory.");
+      }
+
+      try (InputStream inputStream = multipartFile.getInputStream()) {
+        Files.copy(inputStream, destinationFile,
+            StandardCopyOption.REPLACE_EXISTING);
+      }
+    } catch (IOException e) {
+      throw new StorageException("Failed to store file.");
+    }
+  }
+
+  public List<String> storeCertificates(String userId, List<MultipartFile> multipartFile) {
+    try {
+      List<String> fileNames = new ArrayList<>();
+      for (MultipartFile file : multipartFile) {
+        if (file.isEmpty()) {
+          throw new StorageException("Failed to store empty file.");
+        }
+
+        String fileName = userId + "_" + UUID.randomUUID().toString().substring(0, 8);
+        fileNames.add(fileName);
+
+        Path destinationFile = this.rootLocation.resolve(
+                Paths.get("certificates").resolve(fileName))
+            .normalize().toAbsolutePath();
+
+        if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath().normalize())) {
+          throw new StorageException(
+              "Cannot store file outside current directory.");
+        }
+
+        try (InputStream inputStream = file.getInputStream()) {
+          Files.copy(inputStream, destinationFile,
+              StandardCopyOption.REPLACE_EXISTING);
+        }
+      }
+      return fileNames;
+    } catch (IOException e) {
+      throw new StorageException("Failed to store file.");
+    }
+  }
+
+
   @Override
   public Stream<Path> loadAll() {
     try (Stream<Path> paths = Files.walk(this.rootLocation, 1)) {
@@ -99,7 +159,19 @@ public class FileSystemStorageService implements StorageService {
   @Override
   public void init() {
     try {
-      Files.createDirectories(rootLocation);
+      if (!Files.exists(rootLocation)) {
+        Files.createDirectories(rootLocation);
+      }
+
+      Path certificatesDir = rootLocation.resolve("certificates");
+      if (!Files.exists(certificatesDir)) {
+        Files.createDirectories(certificatesDir);
+      }
+
+      Path profilePicturesDir = rootLocation.resolve("profile_pictures");
+      if (!Files.exists(profilePicturesDir)) {
+        Files.createDirectories(profilePicturesDir);
+      }
     } catch (IOException e) {
       throw new StorageException("Could not initialize storage");
     }
