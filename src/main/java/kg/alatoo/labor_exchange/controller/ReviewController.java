@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/review")
+@Validated
 public class ReviewController {
     
     private static Logger log = LoggerFactory.getLogger(ReviewController.class);
@@ -34,29 +36,29 @@ public class ReviewController {
     
 
 
-//    @GetMapping
-//    public ResponseEntity<List<ReviewResponse>> getReview(
-//            @RequestParam(required = false) UUID id) {
-//        try {
-//            List<ReviewResponse> responses = new ArrayList<ReviewResponse>();
-//
-//            if (id == null)
-//                responses.addAll(mapper.toResponses(reviewService.findAll()));
-//            else{
-//                Optional<Review> review = reviewService.findById(id);
-//                if(review.isPresent()){
-//                    responses.add(mapper.toResponse(review.get()));
-//                }
-//            }
-//            if (responses.isEmpty()) {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
-//            return new ResponseEntity<>(responses, HttpStatus.OK);
-//        } catch (Exception e) {
-//            log.error("getReview|ReviewControllerAPI: " + e.getMessage());
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @GetMapping
+    public ResponseEntity<List<ReviewResponse>> getReview(
+            @RequestParam(required = false) UUID id) {
+        try {
+            List<ReviewResponse> responses = new ArrayList<ReviewResponse>();
+
+            if (id == null)
+                responses.addAll(mapper.toResponses(reviewService.findAll()));
+            else{
+                Optional<Review> review = reviewService.findById(id);
+                if(review.isPresent()){
+                    responses.add(mapper.toResponse(review.get()));
+                }
+            }
+            if (responses.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(responses, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("getReview|ReviewControllerAPI: " + e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<String> createReview(

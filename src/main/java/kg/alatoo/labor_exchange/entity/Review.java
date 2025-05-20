@@ -36,6 +36,9 @@ public class Review {
   @Column(name = "comment")
   private String comment;
 
+  @Column(name = "is_active")
+  private Boolean isActive;
+
   @Column(name = "created_at")
   private Timestamp createdAt;
 
