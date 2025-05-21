@@ -40,13 +40,14 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public void store(MultipartFile file) {
+  public void store(MultipartFile file, Path path) {
     try {
       if (file.isEmpty()) {
         throw new StorageException("Failed to store empty file.");
       }
       Path destinationFile = this.rootLocation.resolve(
-              Paths.get(Objects.requireNonNull(file.getOriginalFilename())))
+              Paths.get(path.toString()).resolve(
+                  Objects.requireNonNull(file.getOriginalFilename())))
           .normalize().toAbsolutePath();
 
       if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath().normalize())) {
@@ -69,11 +70,13 @@ public class FileSystemStorageService implements StorageService {
         throw new StorageException("Failed to store empty file.");
       }
 
+      String extension = Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(
+          multipartFile.getOriginalFilename().lastIndexOf("."));
+      String fileName = userId + extension;
       Path destinationFile = this.rootLocation.resolve(
-              Paths.get("profile_pictures").resolve(userId))
+              Paths.get("profile_pictures").resolve(fileName))
           .normalize().toAbsolutePath();
-
-      if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath().normalize())) {
+      if (!destinationFile.getParent().startsWith(this.rootLocation.toAbsolutePath().normalize())) {
         throw new StorageException(
             "Cannot store file outside current directory.");
       }
@@ -95,14 +98,17 @@ public class FileSystemStorageService implements StorageService {
           throw new StorageException("Failed to store empty file.");
         }
 
-        String fileName = userId + "_" + UUID.randomUUID().toString().substring(0, 8);
+        String extension = Objects.requireNonNull(file.getOriginalFilename()).substring(
+            file.getOriginalFilename().lastIndexOf("."));
+        String fileName = userId + "_" + UUID.randomUUID().toString().substring(0, 8) + extension;
         fileNames.add(fileName);
 
         Path destinationFile = this.rootLocation.resolve(
                 Paths.get("certificates").resolve(fileName))
             .normalize().toAbsolutePath();
 
-        if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath().normalize())) {
+        if (!destinationFile.getParent()
+            .startsWith(this.rootLocation.toAbsolutePath().normalize())) {
           throw new StorageException(
               "Cannot store file outside current directory.");
         }
@@ -161,11 +167,6 @@ public class FileSystemStorageService implements StorageService {
     try {
       if (!Files.exists(rootLocation)) {
         Files.createDirectories(rootLocation);
-      }
-
-      Path certificatesDir = rootLocation.resolve("certificates");
-      if (!Files.exists(certificatesDir)) {
-        Files.createDirectories(certificatesDir);
       }
 
       Path profilePicturesDir = rootLocation.resolve("profile_pictures");

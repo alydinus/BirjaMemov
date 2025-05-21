@@ -8,9 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface TutorService {
 
-  void createTutor(TutorCreateRequest tutorCreateRequest, MultipartFile profilePicture, List<MultipartFile> certificates);
+  void createTutor(TutorCreateRequest tutorCreateRequest, MultipartFile profilePicture);
 
-  void updateTutor(UUID id, TutorCreateRequest tutorCreateRequest );
+  void updateTutor(UUID id, TutorCreateRequest tutorCreateRequest, MultipartFile profilePicture);
 
   void deleteTutor(UUID id);
 
