@@ -7,7 +7,7 @@ import java.util.UUID;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
-import kg.alatoo.labor_exchange.payload.request.TutorCreateRequest;
+import kg.alatoo.labor_exchange.payload.request.TutorRequest;
 import kg.alatoo.labor_exchange.repository.TutorRepository;
 import kg.alatoo.labor_exchange.service.TutorService;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +22,15 @@ public class TutorServiceImpl implements TutorService {
   private final FileSystemStorageService fileSystemStorageService;
 
 
-  private Tutor createTutor(TutorCreateRequest tutorCreateRequest) {
+  private Tutor createTutor(TutorRequest tutorRequest) {
     Tutor tutor = new Tutor();
-    tutor.setFirstName(tutorCreateRequest.firstName());
-    tutor.setLastName(tutorCreateRequest.lastName());
-    tutor.setUsername(tutorCreateRequest.username());
-    tutor.setEmail(tutorCreateRequest.email());
-    tutor.setPassword(tutorCreateRequest.password());
-    tutor.setDescription(tutorCreateRequest.description());
-    tutor.setExperienceYears(tutorCreateRequest.experienceYears());
+    tutor.setFirstName(tutorRequest.firstName());
+    tutor.setLastName(tutorRequest.lastName());
+    tutor.setUsername(tutorRequest.username());
+    tutor.setEmail(tutorRequest.email());
+    tutor.setPassword(tutorRequest.password());
+    tutor.setDescription(tutorRequest.description());
+    tutor.setExperienceYears(tutorRequest.experienceYears());
     tutor.setRole(Role.TUTOR);
     tutor.setCreatedAt(LocalDateTime.now());
     return tutor;
@@ -45,8 +45,8 @@ public class TutorServiceImpl implements TutorService {
   }
 
 
-  public void createTutor(TutorCreateRequest tutorCreateRequest, MultipartFile profilePicture) {
-    Tutor tutor = createTutor(tutorCreateRequest);
+  public void createTutor(TutorRequest tutorRequest, MultipartFile profilePicture) {
+    Tutor tutor = createTutor(tutorRequest);
     tutorRepository.save(tutor);
 
     if (!profilePicture.isEmpty()) {
@@ -55,25 +55,27 @@ public class TutorServiceImpl implements TutorService {
 
   }
 
-  public void updateTutor(UUID id, TutorCreateRequest tutorCreateRequest,
+  public Tutor updateTutor(UUID id, TutorRequest tutorRequest,
       MultipartFile profilePicture) {
 
     Tutor tutor = tutorRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-    tutor.setFirstName(tutorCreateRequest.firstName());
-    tutor.setLastName(tutorCreateRequest.lastName());
-    tutor.setUsername(tutorCreateRequest.username());
-    tutor.setEmail(tutorCreateRequest.email());
-    tutor.setPassword(tutorCreateRequest.password());
-    tutor.setDescription(tutorCreateRequest.description());
-    tutor.setExperienceYears(tutorCreateRequest.experienceYears());
+    tutor.setFirstName(tutorRequest.firstName());
+    tutor.setLastName(tutorRequest.lastName());
+    tutor.setUsername(tutorRequest.username());
+    tutor.setEmail(tutorRequest.email());
+    tutor.setPassword(tutorRequest.password());
+    tutor.setDescription(tutorRequest.description());
+    tutor.setExperienceYears(tutorRequest.experienceYears());
     tutor.setRole(Role.TUTOR);
     tutorRepository.save(tutor);
+
 
     if (!profilePicture.isEmpty()) {
       storeProfilePictureAndAddToDatabase(tutor, profilePicture);
     }
+    return tutor;
 
   }
 

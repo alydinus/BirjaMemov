@@ -14,8 +14,6 @@ public interface StorageService {
 
   void storeProfilePicture(String userId, MultipartFile multipartFile);
 
-  List<String> storeCertificates(String userId, List<MultipartFile> multipartFile);
-
   Stream<Path> loadAll();
 
   Path load(String filename);

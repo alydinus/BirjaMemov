@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
-import kg.alatoo.labor_exchange.payload.request.TutorCreateRequest;
+import kg.alatoo.labor_exchange.payload.request.TutorRequest;
 import kg.alatoo.labor_exchange.repository.TutorRepository;
 import kg.alatoo.labor_exchange.service.impl.FileSystemStorageService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class TutorServiceTest {
 
     fileSystemStorageService.init();
 
-    TutorCreateRequest tutor = new TutorCreateRequest(
+    TutorRequest tutor = new TutorRequest(
         "threenimak",
         "marsel@daun.com",
         "123",
