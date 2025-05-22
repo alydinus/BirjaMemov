@@ -32,85 +32,28 @@ public class ReviewController {
         this.reviewService = reviewService;
         this.mapper = reviewMapper;
     }
-    
-    
-
 
     @GetMapping
-    public ResponseEntity<List<ReviewResponse>> getReview(
-            @RequestParam(required = false) UUID id) {
-        try {
-            List<ReviewResponse> responses = new ArrayList<ReviewResponse>();
+    public ResponseEntity<List<ReviewResponse>> getReviews() {
+        return new ResponseEntity<>(mapper.toResponses(reviewService.findAll()), HttpStatus.OK);
+    }
 
-            if (id == null)
-                responses.addAll(mapper.toResponses(reviewService.findAll()));
-            else{
-                Optional<Review> review = reviewService.findById(id);
-                if(review.isPresent()){
-                    responses.add(mapper.toResponse(review.get()));
-                }
-            }
-            if (responses.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(responses, HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("getReview|ReviewControllerAPI: " + e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping
+    public ResponseEntity<ReviewResponse> getReviews(@RequestParam UUID id) {
+        return new ResponseEntity<>(mapper.toResponse(reviewService.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<String> createReview(
-            @RequestBody @Valid ReviewRequest request
-    ) {
-        try{
-            if(reviewService.save(request)){
-                return new ResponseEntity<>("review created", HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>("Failed to create review", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        } catch (Exception e) {
-            log.error("createReview|ReviewControllerAPI: " + e.getMessage());
-            return new ResponseEntity<>("Failed to create review, Error", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<String> createReview(@RequestBody @Valid ReviewRequest request) {
+        reviewService.save(request);
+        return new ResponseEntity<>("review created", HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<String> updateReview(
             @RequestBody @Valid ReviewUpdateRequest request,
             @RequestParam UUID id) {
-        try{
-            Optional<Review> review = reviewService.findById(id);
-
-            if(review.isPresent()) {
-
-                reviewService.update(id, request);
-                return new ResponseEntity<>("review was updated successfully.", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Cannot find review", HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            log.error("updateReview|ReviewControllerAPI: " + e.getMessage());
-            return new ResponseEntity<>("Cannot update review.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        reviewService.update(id, request);
+        return new ResponseEntity<>("review updated", HttpStatus.OK);
     }
-
-//    @DeleteMapping
-//    public ResponseEntity<String> deleteReview(
-//            @RequestParam UUID id) {
-//        try {
-//            if (reviewService.deleteById(id)) {
-//                return new ResponseEntity<>("review was deleted successfully.", HttpStatus.OK);
-//            }
-//
-//            return new ResponseEntity<>("Cannot find review", HttpStatus.BAD_REQUEST);
-//
-//        } catch (Exception e) {
-//            log.error("deleteReview|ReviewControllerAPI: " + e.getMessage());
-//            return new ResponseEntity<>("Cannot delete review.", HttpStatus.INTERNAL_SERVER_ERROR);
-//
-//        }
-//    }
 }

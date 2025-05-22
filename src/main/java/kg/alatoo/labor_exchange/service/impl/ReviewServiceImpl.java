@@ -3,6 +3,7 @@ package kg.alatoo.labor_exchange.service.impl;
 import kg.alatoo.labor_exchange.entity.Review;
 import kg.alatoo.labor_exchange.entity.Student;
 import kg.alatoo.labor_exchange.entity.Tutor;
+import kg.alatoo.labor_exchange.exception.exceptions.NotFoundException;
 import kg.alatoo.labor_exchange.payload.request.ReviewRequest;
 import kg.alatoo.labor_exchange.payload.request.ReviewUpdateRequest;
 import kg.alatoo.labor_exchange.repository.ReviewRepository;
@@ -34,8 +35,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Optional<Review> findById(UUID id) {
-        return reviewRepository.findById(id);
+    public Review findById(UUID id) {
+        Optional<Review> reviewOptional = reviewRepository.findById(id);
+        if(reviewOptional.isPresent()) {
+            return (reviewOptional.get());
+        } else{
+            throw new NotFoundException("Review not found");
+        }
     }
 
     @Override
@@ -44,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Boolean save(ReviewRequest request) {
+    public void save(ReviewRequest request) {
         Tutor tutor = tutorService.getTutorById(UUID.fromString(request.tutorId()));
         Student student = studentService.getStudentById(UUID.fromString(request.studentId()));
 
@@ -57,14 +63,13 @@ public class ReviewServiceImpl implements ReviewService {
         review.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         review.setIsActive(true);
         reviewRepository.save(review);
-        return true;
     }
 
     @Override
     public void update(UUID id,ReviewUpdateRequest request) {
         Optional<Review> reviewOpt = reviewRepository.findById(id);
         if(reviewOpt.isEmpty()) {
-            throw new RuntimeException("No such Review found");
+            throw new NotFoundException("No such Review found");
         }
 
         Review review = reviewOpt.get();

@@ -9,9 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ReviewService {
-    Optional<Review> findById(UUID id);
+    Review findById(UUID id);
     List<Review> findAll();
-    Boolean save(ReviewRequest request);
+    void save(ReviewRequest request);
     void update(UUID id,ReviewUpdateRequest request);
 //    Boolean deleteById(UUID id);
 
