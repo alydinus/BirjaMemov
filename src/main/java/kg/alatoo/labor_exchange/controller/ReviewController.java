@@ -38,6 +38,7 @@ public class ReviewController {
         return new ResponseEntity<>(mapper.toResponses(reviewService.findAll()), HttpStatus.OK);
     }
 
+    @RequestMapping("/all")
     @GetMapping
     public ResponseEntity<ReviewResponse> getReviews(@RequestParam UUID id) {
         return new ResponseEntity<>(mapper.toResponse(reviewService.findById(id)), HttpStatus.OK);
