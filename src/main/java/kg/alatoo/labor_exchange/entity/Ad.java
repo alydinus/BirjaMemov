@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject {
+public class Ad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.exception.exceptions.EntityExists;
 
-public record SubjectRequest(
+public record AdRequest(
         @EntityExists(entityClass = Tutor.class)
         @NotNull
         @NotBlank

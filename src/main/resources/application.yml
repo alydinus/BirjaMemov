@@ -22,7 +22,6 @@ spring:
             client-secret: ${GITHUB_CLIENT_SECRET}
 
 
-
   mail:
     host: { MAIL_HOST }
     port: { MAIL_PORT }
@@ -39,3 +38,5 @@ jwt:
 
 storage:
   location: { STORAGE_LOCATION }
+server:
+  port: 8081
