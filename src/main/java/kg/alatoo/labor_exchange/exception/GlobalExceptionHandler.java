@@ -1,6 +1,6 @@
 package kg.alatoo.labor_exchange.exception;
 
-import kg.alatoo.labor_exchange.exception.exceptions.AdNotFoundException;
+import kg.alatoo.labor_exchange.exception.exceptions.NotFoundException;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +34,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(AdNotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleAdNotFoundException(AdNotFoundException ex) {
+    public  ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

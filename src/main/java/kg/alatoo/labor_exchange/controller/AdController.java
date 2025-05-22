@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdController {
 
-  private static Logger log = LoggerFactory.getLogger(AdController.class);
   private final AdService adService;
   private final AdMapper mapper;
 
