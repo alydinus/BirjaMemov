@@ -1,18 +1,15 @@
 package kg.alatoo.labor_exchange.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "users")
@@ -49,5 +46,9 @@ public abstract class User {
 
   @Column(name = "profile_image_url")
   private String profileImageUrl;
+
+
+  @Column(name = "enabled")
+  private boolean isEnabled;
 
 }

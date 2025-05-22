@@ -1,9 +1,12 @@
 package kg.alatoo.labor_exchange.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import jakarta.annotation.PostConstruct;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
@@ -24,6 +27,7 @@ public class TutorServiceImpl implements TutorService {
 
   private Tutor createTutor(TutorRequest tutorRequest) {
     Tutor tutor = new Tutor();
+    tutor.setEnabled(true);
     tutor.setFirstName(tutorRequest.firstName());
     tutor.setLastName(tutorRequest.lastName());
     tutor.setUsername(tutorRequest.username());
@@ -102,5 +106,27 @@ public class TutorServiceImpl implements TutorService {
 
   public List<Tutor> searchTutors(String query) {
     return List.of();
+  }
+
+  @PostConstruct
+  public void init() {
+    Tutor tutor = new Tutor();
+    tutor.setFirstName("Tutor");
+    tutor.setLastName("Tester");
+    tutor.setUsername("Tutor");
+    tutor.setEmail("tutor@gmail.com");
+    tutor.setRole(Role.TUTOR);
+    tutor.setDescription("Tutor");
+    tutor.setRating(55D);
+    tutor.setExperienceYears(55);
+    tutor.setAds(Collections.emptyList());
+    tutor.setPassword("$2a$12$yWJRq2CHwvIQYBZgL1AlEe1o9HWG1mSUQgS7SK49.66j5OTpQ9cmO");
+    tutor.setCreatedAt(LocalDateTime.now());
+    tutor.setEnabled(true);
+    tutor.setProfileImageUrl("profile image");
+
+
+
+    tutorRepository.save(tutor);
   }
 }
