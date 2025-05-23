@@ -52,6 +52,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                                 roles.stream().map(SimpleGrantedAuthority::new).toList()
                         );
                         SecurityContextHolder.getContext().setAuthentication(authToken);
+                        filterChain.doFilter(request, response);
                     }
                 }
             } catch (Exception e) {
