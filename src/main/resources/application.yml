@@ -14,12 +14,13 @@ spring:
       ddl-auto: update
     show-sql: true
     format_sql: true
-
   h2:
     console:
       enabled: true
       path: /h2-console
-
+  sql:
+    init:
+      mode: always
   security:
     oauth2:
       client:

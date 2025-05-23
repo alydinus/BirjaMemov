@@ -108,25 +108,4 @@ public class TutorServiceImpl implements TutorService {
     return List.of();
   }
 
-  @PostConstruct
-  public void init() {
-    Tutor tutor = new Tutor();
-    tutor.setFirstName("Tutor");
-    tutor.setLastName("Tester");
-    tutor.setUsername("Tutor");
-    tutor.setEmail("tutor@gmail.com");
-    tutor.setRole(Role.TUTOR);
-    tutor.setDescription("Tutor");
-    tutor.setRating(55D);
-    tutor.setExperienceYears(55);
-    tutor.setAds(Collections.emptyList());
-    tutor.setPassword("$2a$12$yWJRq2CHwvIQYBZgL1AlEe1o9HWG1mSUQgS7SK49.66j5OTpQ9cmO");
-    tutor.setCreatedAt(LocalDateTime.now());
-    tutor.setEnabled(true);
-    tutor.setProfileImageUrl("profile image");
-
-
-
-    tutorRepository.save(tutor);
-  }
 }

@@ -71,8 +71,8 @@ public class SecurityConfig {
 
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
         );
 
 //        http.oauth2Login(Customizer.withDefaults());
@@ -104,7 +104,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:8080")); // URL фронтенда
+        config.setAllowedOrigins(List.of("http://localhost:8080"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

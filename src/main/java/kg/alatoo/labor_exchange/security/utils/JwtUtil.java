@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
@@ -19,7 +20,12 @@ public class JwtUtil {
 
     public String generateToken(Collection<GrantedAuthority> authorities, String username) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", authorities); // Сохраняем роли
+
+        List<String> roles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        claims.put("roles", roles);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -35,6 +41,7 @@ public class JwtUtil {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -45,7 +52,8 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return (List<String>) claims.get("roles");
+        return claims.get("roles", List.class);
+
     }
 
     public String getUsernameFromToken(String token) {

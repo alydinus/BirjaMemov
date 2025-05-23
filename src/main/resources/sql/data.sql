@@ -1,22 +1,16 @@
-//потом допилю что бы норм работало
-CREATE TABLE IF NOT EXISTS AUTHORITIES (
-                                           username VARCHAR(50) NOT NULL,
-                                            authority VARCHAR(50) NOT NULL,
-                                            FOREIGN KEY (username) REFERENCES USERS(username)
-    );
-
-
 INSERT INTO users (id, username, email, password, role, first_name, last_name, created_at, profile_image_url, enabled)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440001', 'tutor1', 'tutor1@example.com', '$2a$12$yWJRq2CHwvIQYBZgL1AlEe1o9HWG1mSUQgS7SK49.66j5OTpQ9cmO', 1, 'John', 'Doe', '2023-01-02 11:00:00', 'https://example.com/tutor1.jpg', true),
-    ('550e8400-e29b-41d4-a716-446655440002', 'tutor2', 'tutor2@example.com', '$2a$12$yWJRq2CHwvIQYBZgL1AlEe1o9HWG1mSUQgS7SK49.66j5OTpQ9cmO', 1, 'Jane', 'Smith', '2023-01-03 12:00:00', 'https://example.com/tutor2.jpg', true);
+    ('11111111-1111-1111-1111-111111111111', 'admin', 'admin@example.com', '$2a$12$LfE80ftlELiMwgGVnZFYTObPuMRACH/zjUETR7S6Uuk8EJf7jS3Bi', 0, 'Admin', 'User', CURRENT_TIMESTAMP, 'https://example.com/admin.jpg', true),
+    ('22222222-2222-2222-2222-222222222222', 'tutor1', 'tutor1@example.com', '$2a$12$LfE80ftlELiMwgGVnZFYTObPuMRACH/zjUETR7S6Uuk8EJf7jS3Bi', 1, 'John', 'Doe', CURRENT_TIMESTAMP, 'https://example.com/tutor1.jpg', true),
+    ('33333333-3333-3333-3333-333333333333', 'tutor2', 'tutor2@example.com', '$2a$12$LfE80ftlELiMwgGVnZFYTObPuMRACH/zjUETR7S6Uuk8EJf7jS3Bi', 1, 'Jane', 'Smith', CURRENT_TIMESTAMP, 'https://example.com/tutor2.jpg', true);
 
 INSERT INTO tutors (id, description, rating, experience_years)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440001', 'Опытный преподаватель математики с 10-летним стажем', 4.8, 10),
-    ('550e8400-e29b-41d4-a716-446655440002', 'Преподаватель английского языка, носитель', 4.9, 8);
+    ('22222222-2222-2222-2222-222222222222', 'Experienced tutor with 10 years of teaching programming', 4.8, 10),
+    ('33333333-3333-3333-3333-333333333333', 'Professional tutor specializing in algorithms and data structures', 4.9, 8);
 
 INSERT INTO authorities (username, authority)
 VALUES
+    ('admin', 'ROLE_ADMIN'),
     ('tutor1', 'ROLE_TUTOR'),
-    ('tutor2', 'ROLE_TUTOR');username, authority);
+    ('tutor2', 'ROLE_TUTOR');

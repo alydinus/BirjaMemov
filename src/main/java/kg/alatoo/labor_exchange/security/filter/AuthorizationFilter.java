@@ -34,35 +34,34 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/login") ||
             request.getServletPath().startsWith("/h2-console")) {
             filterChain.doFilter(request, response);
-        } else {
+        }
+        else {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if(authorizationHeader == null ) {
-                filterChain.doFilter(request, response);
-            } else{
-                String token =  authorizationHeader.substring("Bearer ".length());
+            try {
+                if (authorizationHeader == null) {
+                    throw new ServletException("Authorization header is null");
+                } else {
+                    String token = authorizationHeader.substring("Bearer ".length());
 
-                if (token != null && jwtUtil.validateToken(token)) {
-                    try {
+                    if (token != null && jwtUtil.validateToken(token)) {
                         String username = jwtUtil.getUsernameFromToken(token);
                         List<String> roles = jwtUtil.getRolesFromToken(token);
-
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                                 username,
                                 null,
                                 roles.stream().map(SimpleGrantedAuthority::new).toList()
                         );
-
                         SecurityContextHolder.getContext().setAuthentication(authToken);
-                        filterChain.doFilter(request, response);
-                    } catch (Exception e) {
-                        response.setHeader("error", e.getMessage());
-                        response.setStatus(HttpStatus.FORBIDDEN.value());
-                        Map<String, String> error = new HashMap<>();
-                        error.put("error_message", e.getMessage());
-                        response.setContentType(APPLICATION_JSON_VALUE);
-                        new ObjectMapper().writeValue(response.getOutputStream(), error);
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.setHeader("error", e.getMessage());
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message", e.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         }
     }
