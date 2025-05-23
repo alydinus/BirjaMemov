@@ -1,5 +1,16 @@
 package kg.alatoo.labor_exchange.service.impl;
 
+import kg.alatoo.labor_exchange.config.StorageProperties;
+import kg.alatoo.labor_exchange.exception.exceptions.StorageException;
+import kg.alatoo.labor_exchange.exception.exceptions.StorageFileNotFoundException;
+import kg.alatoo.labor_exchange.service.StorageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -12,17 +23,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
-import kg.alatoo.labor_exchange.config.StorageProperties;
-import kg.alatoo.labor_exchange.entity.User;
-import kg.alatoo.labor_exchange.exception.exceptions.StorageException;
-import kg.alatoo.labor_exchange.exception.exceptions.StorageFileNotFoundException;
-import kg.alatoo.labor_exchange.service.StorageService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileSystemStorageService implements StorageService {

@@ -1,7 +1,6 @@
 package kg.alatoo.labor_exchange.controller;
 
 import jakarta.validation.Valid;
-import kg.alatoo.labor_exchange.entity.Review;
 import kg.alatoo.labor_exchange.mapper.ReviewMapper;
 import kg.alatoo.labor_exchange.payload.request.ReviewRequest;
 import kg.alatoo.labor_exchange.payload.request.ReviewUpdateRequest;
@@ -14,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

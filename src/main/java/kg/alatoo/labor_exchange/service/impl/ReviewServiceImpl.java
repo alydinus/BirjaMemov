@@ -7,11 +7,9 @@ import kg.alatoo.labor_exchange.exception.exceptions.NotFoundException;
 import kg.alatoo.labor_exchange.payload.request.ReviewRequest;
 import kg.alatoo.labor_exchange.payload.request.ReviewUpdateRequest;
 import kg.alatoo.labor_exchange.repository.ReviewRepository;
-import kg.alatoo.labor_exchange.repository.TutorRepository;
 import kg.alatoo.labor_exchange.service.ReviewService;
 import kg.alatoo.labor_exchange.service.StudentService;
 import kg.alatoo.labor_exchange.service.TutorService;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;

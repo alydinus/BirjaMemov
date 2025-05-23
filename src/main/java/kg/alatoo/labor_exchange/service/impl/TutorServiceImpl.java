@@ -1,12 +1,5 @@
 package kg.alatoo.labor_exchange.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
-import jakarta.annotation.PostConstruct;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
@@ -16,6 +9,11 @@ import kg.alatoo.labor_exchange.service.TutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service

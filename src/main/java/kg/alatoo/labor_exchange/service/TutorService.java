@@ -1,10 +1,11 @@
 package kg.alatoo.labor_exchange.service;
 
-import java.util.List;
-import java.util.UUID;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.payload.request.TutorRequest;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.UUID;
 
 public interface TutorService {
 

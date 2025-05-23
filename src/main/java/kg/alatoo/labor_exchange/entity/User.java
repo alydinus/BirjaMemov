@@ -1,15 +1,11 @@
 package kg.alatoo.labor_exchange.entity;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +30,9 @@ public abstract class User {
   @Column(name = "role", nullable = false)
   @Enumerated
   private Role role;
+
+  @Column(name = "refresh_token")
+  private String refreshToken;
 
   @Column(name = "first_name", nullable = false, length = 50)
   private String firstName;

@@ -1,7 +1,6 @@
 package kg.alatoo.labor_exchange.service.impl;
 
 import kg.alatoo.labor_exchange.entity.Student;
-import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.repository.StudentRepository;
 import kg.alatoo.labor_exchange.service.StudentService;
 import org.springframework.stereotype.Service;

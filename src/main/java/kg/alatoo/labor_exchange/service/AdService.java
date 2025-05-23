@@ -4,7 +4,6 @@ import kg.alatoo.labor_exchange.entity.Ad;
 import kg.alatoo.labor_exchange.payload.request.AdRequest;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface AdService {

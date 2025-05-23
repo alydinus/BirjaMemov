@@ -14,7 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -32,7 +34,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
         System.out.println(request.getRequestURI());
         if (request.getServletPath().equals("/login") ||
-            request.getServletPath().startsWith("/h2-console")) {
+            request.getServletPath().startsWith("/h2-console") ||
+            request.getServletPath().startsWith("/auth")
+        ) {
             filterChain.doFilter(request, response);
         }
         else {

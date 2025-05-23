@@ -1,29 +1,18 @@
 package kg.alatoo.labor_exchange.controller;
 
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import kg.alatoo.labor_exchange.entity.Ad;
 import kg.alatoo.labor_exchange.mapper.AdMapper;
 import kg.alatoo.labor_exchange.payload.request.AdRequest;
 import kg.alatoo.labor_exchange.payload.response.AdResponse;
 import kg.alatoo.labor_exchange.service.AdService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/subject")

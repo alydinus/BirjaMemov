@@ -1,9 +1,12 @@
 package kg.alatoo.labor_exchange.security.utils;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import kg.alatoo.labor_exchange.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -12,11 +15,21 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
 
+    private final UserService userService;
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
     private long jwtExp;
+
+    @Value("${jwt.refresh-exp}")
+    private long jwtRefreshExp;
+
+    public JwtUtil(UserService userService) {
+        this.userService = userService;
+    }
+
 
     public String generateToken(Collection<GrantedAuthority> authorities, String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -36,6 +49,27 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateRefreshToken(Collection<GrantedAuthority> authorities, String username) {
+        Map<String, Object> claims = new HashMap<>();
+
+        List<String> roles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        claims.put("roles", roles);
+
+        String refreshToken = Jwts.builder()
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtRefreshExp))
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
+
+        userService.updateRefresh(Map.of("username", username, "refresh_token", refreshToken));
+        return refreshToken;
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
@@ -53,7 +87,6 @@ public class JwtUtil {
                 .getBody();
 
         return claims.get("roles", List.class);
-
     }
 
     public String getUsernameFromToken(String token) {
@@ -62,5 +95,30 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public Map<String,String> refresh(String token){
+        if(validateToken(token)){
+            String username = getUsernameFromToken(token);
+            List<String> roles = getRolesFromToken(token);
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
+            for(String role : roles){
+                authorities.add(new SimpleGrantedAuthority(role));
+            }
+
+            String accessToken = generateToken(authorities,username);
+            String refreshToken = generateRefreshToken(authorities,username);
+            Map<String, String > map = Map.of(
+                    "access_token", accessToken,
+                    "refresh_token", refreshToken,
+                    "username", username
+            );
+
+            userService.updateRefresh(map);
+
+            return(map);
+        } else{
+            throw new RuntimeException("Refresh token is invalid");
+        }
     }
 }

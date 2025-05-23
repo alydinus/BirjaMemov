@@ -1,10 +1,11 @@
 package kg.alatoo.labor_exchange.exception.validator;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import kg.alatoo.labor_exchange.exception.exceptions.EntityExists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

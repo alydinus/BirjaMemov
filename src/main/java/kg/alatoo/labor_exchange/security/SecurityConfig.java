@@ -4,7 +4,6 @@ package kg.alatoo.labor_exchange.security;
 import kg.alatoo.labor_exchange.security.filter.AuthenticationFilter;
 import kg.alatoo.labor_exchange.security.filter.AuthorizationFilter;
 import kg.alatoo.labor_exchange.security.utils.JwtUtil;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +19,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,7 +54,7 @@ public class SecurityConfig {
         http.cors((cors -> cors.configurationSource(corsConfigurationSource())));
 
         http.csrf(csrf -> csrf
-                .ignoringRequestMatchers("/api/**","/login","/verify/2fa")
+                .ignoringRequestMatchers("/api/**","/login","/verify/2fa","/auth/**")
                 .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")));
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -66,8 +64,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> request
 
 
-                .requestMatchers("/","/registration","/css/**", "/images/**",
-                        "/api/auth/**", "/login/**", "/oauth2/**", "/verify/**").permitAll()
+                .requestMatchers("/","/registration/**","/css/**", "/images/**",
+                        "/auth/**", "/login/**", "/oauth2/**", "/verify/**", "auth/**", "/favicon/**").permitAll()
 
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 

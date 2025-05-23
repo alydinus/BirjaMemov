@@ -45,6 +45,7 @@ spring:
 jwt:
   secret: afsdkhjasdjhkfhadsjklghadslkjghaskdjghakjsd
   expiration: 1800000
+  refresh-exp: 2629800000
 
 
 storage:

@@ -5,7 +5,6 @@ import kg.alatoo.labor_exchange.payload.request.ReviewRequest;
 import kg.alatoo.labor_exchange.payload.request.ReviewUpdateRequest;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface ReviewService {

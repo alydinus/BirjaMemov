@@ -8,17 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import kg.alatoo.labor_exchange.security.utils.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -36,6 +33,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(
             HttpServletRequest request,
             HttpServletResponse response) throws AuthenticationException {
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -53,19 +51,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         User user = (User) authentication.getPrincipal();
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList()));
-
         String accessToken = jwtUtil.generateToken(user.getAuthorities(),user.getUsername());
-        String refreshToken = jwtUtil.generateToken(user.getAuthorities(),user.getUsername());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getAuthorities(),user.getUsername());
 
-        //refresh
 
         Map<String, String> token = new HashMap<>();
         token.put("access_token", accessToken);
-//        token.put("refresh_token", refreshToken);
+        token.put("refresh_token", refreshToken);
 
         response.setContentType(APPLICATION_JSON_VALUE);
         response.addHeader("Authorization", "Bearer " + token);
