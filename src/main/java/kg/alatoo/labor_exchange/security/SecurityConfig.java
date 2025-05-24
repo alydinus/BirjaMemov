@@ -52,18 +52,18 @@ public class SecurityConfig {
     http.cors((cors -> cors.configurationSource(corsConfigurationSource())));
 
     http.csrf(csrf -> csrf
-        .ignoringRequestMatchers("/api/**", "/login", "/verify/2fa", "/auth/**")
+        .ignoringRequestMatchers("/api/**", "/login", "/verify/2fa", "/api/auth/**")
         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")));
 
     http.sessionManagement(
         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    http.headers(headers -> headers.frameOptions().disable());// не фикси е ба нат просто не трогай , санжар минетов что вы себе позволяете
+    http.headers(headers -> headers.frameOptions().disable());// аналдин алыкулов найс комит на +172
 
     http.authorizeHttpRequests(request -> request
 
             .requestMatchers("/", "/registration/**", "/css/**", "/images/**",
-                "/auth/**", "/login/**", "/oauth2/**", "/verify/**", "auth/**", "/favicon/**")
+                "/api/auth/**", "/login/**", "/oauth2/**", "/verify/**", "auth/**", "/favicon/**")
             .permitAll()
 
             .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()

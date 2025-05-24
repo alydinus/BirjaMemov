@@ -51,7 +51,7 @@ public class TutorServiceImpl implements TutorService {
     Tutor tutor = createTutor(tutorRequest);
     tutorRepository.save(tutor);
 
-    if (!profilePicture.isEmpty()) {
+    if (profilePicture != null) {
       storeProfilePictureAndAddToDatabase(tutor, profilePicture);
     }
 
