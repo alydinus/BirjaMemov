@@ -1,5 +1,6 @@
 package kg.alatoo.labor_exchange.service.impl;
 
+import kg.alatoo.labor_exchange.entity.Subject;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
@@ -21,18 +22,17 @@ public class TutorServiceImpl implements TutorService {
 
   private final TutorRepository tutorRepository;
   private final FileSystemStorageService fileSystemStorageService;
+  private final SubjectServiceImpl subjectService;
 
 
   private Tutor createTutor(TutorRequest tutorRequest) {
     Tutor tutor = new Tutor();
 
     if (!tutorRequest.subjects().isEmpty()) {
-      tutorRequest.subjects().forEach(subject -> {
-        if (subject.getId() == null) {
-          throw new IllegalArgumentException("Subject ID cannot be null");
-        }
-        tutor.addSubject(subject);
-      });
+      List<Subject> tutorSubjects = tutorRequest.subjects().stream()
+          .map(subjectService::getSubjectByName)
+          .toList();
+      tutor.setSubjects(tutorSubjects);
     }
 
     tutor.setEnabled(true);
@@ -116,4 +116,7 @@ public class TutorServiceImpl implements TutorService {
     return List.of();
   }
 
+  public Tutor updateTutorSubject(UUID id, UUID subjectId) {
+    return null;
+  }
 }

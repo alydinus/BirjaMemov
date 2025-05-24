@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import kg.alatoo.labor_exchange.entity.Subject;
 import kg.alatoo.labor_exchange.exception.exceptions.NotFoundException;
-import kg.alatoo.labor_exchange.payload.request.SubjectCreateRequest;
-import kg.alatoo.labor_exchange.payload.request.SubjectUpdateRequest;
+import kg.alatoo.labor_exchange.payload.request.SubjectRequest;
 import kg.alatoo.labor_exchange.repository.SubjectRepository;
 import kg.alatoo.labor_exchange.service.SubjectService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +16,13 @@ public class SubjectServiceImpl implements SubjectService {
 
   private final SubjectRepository subjectRepository;
 
-  public void createSubject(SubjectCreateRequest request) {
+  public void createSubject(SubjectRequest request) {
     Subject subject = new Subject();
     subject.setName(request.name());
     subjectRepository.save(subject);
   }
 
-  public void updateSubject(UUID id, SubjectUpdateRequest request) {
+  public void updateSubject(UUID id, SubjectRequest request) {
     Subject subject = subjectRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Subject not found with id: " + id));
     subject.setName(request.name());
@@ -44,5 +43,9 @@ public class SubjectServiceImpl implements SubjectService {
   public Subject getSubjectById(UUID id) {
     return subjectRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Subject not found with id: " + id));
+  }
+
+  public Subject getSubjectByName(String name) {
+    return subjectRepository.findSubjectByName(name);
   }
 }

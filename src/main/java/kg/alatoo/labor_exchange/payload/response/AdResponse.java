@@ -9,7 +9,6 @@ public record AdResponse(
         String lessonName,
         Integer hourlyPay,
         String description,
-        Timestamp createdAt,
-        Boolean isActive
+        Timestamp createdAt
 ) {
 }

@@ -14,11 +14,10 @@ public class AdMapper {
                 ad.getId().toString(),
                 ad.getTutor().getId().toString(),
                 ad.getTitle(),
-                ad.getLessonName(),
+                ad.getSubject().getName(),
                 ad.getHourlyPay(),
                 ad.getDescription(),
-                ad.getCreatedAt(),
-                ad.getIsActive());
+                ad.getCreatedAt());
         return response;
     }
 

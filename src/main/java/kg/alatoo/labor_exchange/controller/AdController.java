@@ -34,7 +34,7 @@ public class AdController {
   }
 
   @PostMapping
-  public ResponseEntity<String> creagteAd(
+  public ResponseEntity<String> createAd(
       @RequestBody @Valid AdRequest request
   ) {
     adService.save(request);

@@ -35,7 +35,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/login") ||
             request.getServletPath().startsWith("/h2-console") ||
             request.getServletPath().startsWith("/auth") ||
-            request.getServletPath().startsWith("/api/ads") && request.getMethod().equals("GET")
+            request.getServletPath().startsWith("/api/ads") && request.getMethod().equals("GET") ||
+            request.getServletPath().startsWith("/api/subjects") && request.getMethod().equals("GET")
         ) {
             filterChain.doFilter(request, response);
         }
