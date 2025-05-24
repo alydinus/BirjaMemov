@@ -25,6 +25,16 @@ public class TutorServiceImpl implements TutorService {
 
   private Tutor createTutor(TutorRequest tutorRequest) {
     Tutor tutor = new Tutor();
+
+    if (!tutorRequest.subjects().isEmpty()) {
+      tutorRequest.subjects().forEach(subject -> {
+        if (subject.getId() == null) {
+          throw new IllegalArgumentException("Subject ID cannot be null");
+        }
+        tutor.addSubject(subject);
+      });
+    }
+
     tutor.setEnabled(true);
     tutor.setFirstName(tutorRequest.firstName());
     tutor.setLastName(tutorRequest.lastName());
