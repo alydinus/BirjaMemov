@@ -69,6 +69,7 @@ public class SecurityConfig {
             .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 
             .requestMatchers(HttpMethod.GET, "/api/ads/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/subjects/**").permitAll()
 
             .anyRequest().authenticated()
 //                .anyRequest().permitAll()

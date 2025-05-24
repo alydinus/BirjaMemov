@@ -6,6 +6,7 @@ import kg.alatoo.labor_exchange.exception.exceptions.NotFoundException;
 import kg.alatoo.labor_exchange.payload.request.AdRequest;
 import kg.alatoo.labor_exchange.repository.AdRepository;
 import kg.alatoo.labor_exchange.service.AdService;
+import kg.alatoo.labor_exchange.service.SubjectService;
 import kg.alatoo.labor_exchange.service.TutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final TutorService tutorService;
+    private final SubjectService subjectService;
 
     public Ad findById(UUID id) {
         return adRepository.findById(id).orElseThrow(() -> new NotFoundException("Ad not found with id: " + id));
@@ -33,7 +35,7 @@ public class AdServiceImpl implements AdService {
         ad.setTutor(tutor);
         ad.setTitle(request.title());
         ad.setDescription(request.description());
-        ad.setLessonName(request.lessonName());
+        ad.setSubject(subjectService.getSubjectByName(request.lessonName()));
         ad.setHourlyPay(request.hourlyPay());
     }
 
@@ -45,7 +47,7 @@ public class AdServiceImpl implements AdService {
         ad.setTutor(tutor);
         ad.setTitle(request.title());
         ad.setDescription(request.description());
-        ad.setLessonName(request.lessonName());
+        ad.setSubject(subjectService.getSubjectByName(request.lessonName()));
         ad.setHourlyPay(request.hourlyPay());
         adRepository.save(ad);
     }

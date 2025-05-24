@@ -23,4 +23,6 @@ public interface TutorService {
 
   List<Tutor> searchTutors(String query);
 
+  Tutor updateTutorSubject(UUID id, UUID subjectId);
+
 }

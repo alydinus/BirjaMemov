@@ -27,8 +27,9 @@ public class Ad {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "lesson_name")
-    private String lessonName;
+    @ManyToOne
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
 
     @Column(name = "hourly_pay")
     private Integer hourlyPay;

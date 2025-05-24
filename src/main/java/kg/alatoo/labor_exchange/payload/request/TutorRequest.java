@@ -3,6 +3,7 @@ package kg.alatoo.labor_exchange.payload.request;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import java.util.List;
 
 public record TutorRequest(
     @NotNull(message = "Имя пользователя не должно быть пустым") @Max(value = 50, message = "Имя пользователя не должно превышать 50 символов") String username,
@@ -15,7 +16,9 @@ public record TutorRequest(
 
     @Max(value = 500, message = "Описание не должно превышать 500 символов") String description,
 
-    Integer experienceYears
+    Integer experienceYears,
+
+    List<String> subjects
 
 ) {
 
