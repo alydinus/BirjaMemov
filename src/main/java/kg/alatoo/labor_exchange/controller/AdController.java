@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/subject")
+@RequestMapping("/api/ads")
 @Validated
 @RequiredArgsConstructor
 public class AdController {
@@ -29,13 +29,12 @@ public class AdController {
   }
 
   @GetMapping
-  public ResponseEntity<List<AdResponse>> getAllAds(
-      @RequestParam(required = false) UUID id) {
+  public ResponseEntity<List<AdResponse>> getAllAds() {
     return new ResponseEntity<>(mapper.toResponses(adService.findAll()), HttpStatus.OK);
   }
 
   @PostMapping
-  public ResponseEntity<String> createSubject(
+  public ResponseEntity<String> createAd(
       @RequestBody @Valid AdRequest request
   ) {
     adService.save(request);
@@ -43,7 +42,7 @@ public class AdController {
   }
 
   @PutMapping
-  public ResponseEntity<String> updateSubject(
+  public ResponseEntity<String> updateAd(
       @RequestBody @Valid AdRequest request,
       @RequestParam UUID id) {
     adService.update(id, request);
@@ -52,7 +51,7 @@ public class AdController {
   }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteSubject(
+    public ResponseEntity<String> deleteAd(
             @RequestParam UUID id) {
         adService.deleteById(id);
         return new ResponseEntity<>("subject was deleted successfully.", HttpStatus.OK);

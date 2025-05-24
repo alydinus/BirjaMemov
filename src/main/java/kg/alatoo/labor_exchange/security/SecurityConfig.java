@@ -1,11 +1,15 @@
 package kg.alatoo.labor_exchange.security;
 
 
+import java.util.List;
+import javax.sql.DataSource;
 import kg.alatoo.labor_exchange.security.filter.AuthenticationFilter;
 import kg.alatoo.labor_exchange.security.filter.AuthorizationFilter;
 import kg.alatoo.labor_exchange.security.utils.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -23,114 +27,111 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.sql.DataSource;
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
-    private final AuthenticationConfiguration authenticationConfiguration;
+  private final JwtUtil jwtUtil;
+  private final AuthenticationConfiguration authenticationConfiguration;
 
-    public SecurityConfig(JwtUtil jwtUtil, AuthenticationConfiguration authenticationConfiguration) {
-        this.jwtUtil = jwtUtil;
-        this.authenticationConfiguration = authenticationConfiguration;
-    }
+  @Bean
+  public UserDetailsService userDetailsService(DataSource dataSource) {
+    return new JdbcUserDetailsManager(dataSource);
+  }
 
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        JdbcUserDetailsManager provider = new JdbcUserDetailsManager(dataSource);
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http, DataSource dataSource)
+      throws Exception {
 
-        return provider;
-    }
+    AuthenticationFilter customAuthenticationFilter = new AuthenticationFilter(jwtUtil,
+        authenticationManager(authenticationConfiguration,
+            daoAuthenticationProvider(userDetailsService(dataSource), bCryptPasswordEncoder())));
+    AuthorizationFilter customAuthorizationFilter = new AuthorizationFilter(jwtUtil);
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, DataSource dataSource) throws Exception {
+    http.cors((cors -> cors.configurationSource(corsConfigurationSource())));
 
-        AuthenticationFilter customAuthenticationFilter = new AuthenticationFilter(jwtUtil,authenticationManager(authenticationConfiguration,daoAuthenticationProvider(userDetailsService(dataSource),bCryptPasswordEncoder())));
-        AuthorizationFilter customAuthorizationFilter = new AuthorizationFilter(jwtUtil);
+    http.csrf(csrf -> csrf
+        .ignoringRequestMatchers("/api/**", "/login", "/verify/2fa", "/auth/**")
+        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")));
 
-        http.cors((cors -> cors.configurationSource(corsConfigurationSource())));
+    http.sessionManagement(
+        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.csrf(csrf -> csrf
-                .ignoringRequestMatchers("/api/**","/login","/verify/2fa","/auth/**")
-                .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")));
+    http.headers(headers -> headers.frameOptions().disable());// не фикси е ба нат просто не трогай , санжар минетов что вы себе позволяете
 
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    http.authorizeHttpRequests(request -> request
 
-        http.headers(headers -> headers.frameOptions().disable());// не фикси е ба нат просто не трогай
+            .requestMatchers("/", "/registration/**", "/css/**", "/images/**",
+                "/auth/**", "/login/**", "/oauth2/**", "/verify/**", "auth/**", "/favicon/**")
+            .permitAll()
 
-        http.authorizeHttpRequests(request -> request
+            .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 
+            .requestMatchers(HttpMethod.GET, "/api/ads/**").permitAll()
 
-                .requestMatchers("/","/registration/**","/css/**", "/images/**",
-                        "/auth/**", "/login/**", "/oauth2/**", "/verify/**", "auth/**", "/favicon/**").permitAll()
-
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-
-                .anyRequest().authenticated()
+            .anyRequest().authenticated()
 //                .anyRequest().permitAll()
-        );
+    );
 
 //        http.oauth2Login(Customizer.withDefaults());
-        http.oauth2Login(oauth2 -> oauth2
-                .loginPage("/login")
-                .authorizationEndpoint(authorization -> authorization
-                        .baseUri("/oauth2/authorization"))
-                .redirectionEndpoint(redirection -> redirection
-                        .baseUri("/login/oauth2/code/*")
-                )
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/login?error"));
+    http.oauth2Login(oauth2 -> oauth2
+        .loginPage("/login")
+        .authorizationEndpoint(authorization -> authorization
+            .baseUri("/oauth2/authorization"))
+        .redirectionEndpoint(redirection -> redirection
+            .baseUri("/login/oauth2/code/*")
+        )
+        .defaultSuccessUrl("/", true)
+        .failureUrl("/login?error"));
 
-        http.formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .permitAll()
-        );
+    http.formLogin(formLogin -> formLogin
+        .loginPage("/login")
+        .permitAll()
+    );
 
-        http.logout(logout -> logout
-                .permitAll()
-        );
+    http.logout(logout -> logout
+        .permitAll()
+    );
 
-        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilter(customAuthenticationFilter);
+    http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+    http.addFilter(customAuthenticationFilter);
 
-        return http.build();
-    }
+    return http.build();
+  }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:8080"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowedOrigins(List.of("http://localhost:8080"));
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+    config.setAllowedHeaders(List.of("*"));
+    config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return source;
+  }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService,
-                                                               BCryptPasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        return provider;
-    }
+  @Bean
+  public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService,
+      BCryptPasswordEncoder passwordEncoder) {
+    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setUserDetailsService(userDetailsService);
+    provider.setPasswordEncoder(passwordEncoder);
+    return provider;
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authConfig,
-            DaoAuthenticationProvider daoAuthenticationProvider
-    ) throws Exception {
-        return new ProviderManager(List.of(daoAuthenticationProvider));
-    }
+  @Bean
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authConfig,
+      DaoAuthenticationProvider daoAuthenticationProvider
+  ) throws Exception {
+    return new ProviderManager(List.of(daoAuthenticationProvider));
+  }
 }

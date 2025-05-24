@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Table(name = "subjects")
+@Table(name = "ads")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
