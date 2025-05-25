@@ -36,7 +36,8 @@ public class AdServiceImpl implements AdService {
         ad.setTitle(request.title());
         ad.setDescription(request.description());
         ad.setSubject(subjectService.getSubjectByName(request.lessonName()));
-        ad.setHourlyPay(request.hourlyPay());
+        ad.setHourlyPay(request.price());
+        adRepository.save(ad);
     }
 
     public void update(UUID id, AdRequest request) {
@@ -48,7 +49,7 @@ public class AdServiceImpl implements AdService {
         ad.setTitle(request.title());
         ad.setDescription(request.description());
         ad.setSubject(subjectService.getSubjectByName(request.lessonName()));
-        ad.setHourlyPay(request.hourlyPay());
+        ad.setHourlyPay(request.price());
         adRepository.save(ad);
     }
 

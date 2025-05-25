@@ -3,7 +3,9 @@ package kg.alatoo.labor_exchange.security.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import kg.alatoo.labor_exchange.entity.User;
 import kg.alatoo.labor_exchange.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
 
     private final UserService userService;
@@ -26,9 +29,6 @@ public class JwtUtil {
     @Value("${JWT_REF_EXPIRATION}")
     private long jwtRefreshExp;
 
-    public JwtUtil(UserService userService) {
-        this.userService = userService;
-    }
 
 
     public String generateToken(Collection<GrantedAuthority> authorities, String username) {
@@ -38,7 +38,10 @@ public class JwtUtil {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
+        User user = userService.getUserByUsername(username);
+
         claims.put("roles", roles);
+        claims.put("type", user.getRole().toString());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -56,7 +59,10 @@ public class JwtUtil {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
+        User user = userService.getUserByUsername(username);
+
         claims.put("roles", roles);
+        claims.put("type", user.getRole().toString());
 
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
