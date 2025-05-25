@@ -1,7 +1,7 @@
 package kg.alatoo.labor_exchange.payload.response;
 
 public record TutorResponse(
-    String id,
+//    String id,
     String email,
     String firstName,
     String lastName,

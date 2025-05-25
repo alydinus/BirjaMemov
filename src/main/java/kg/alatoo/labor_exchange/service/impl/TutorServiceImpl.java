@@ -1,6 +1,6 @@
 package kg.alatoo.labor_exchange.service.impl;
 
-import kg.alatoo.labor_exchange.entity.Subject;
+import kg.alatoo.labor_exchange.entity.Authority;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -49,14 +46,26 @@ public class TutorServiceImpl implements TutorService {
     tutor.setRole(Role.TUTOR);
     tutor.setCreatedAt(LocalDateTime.now());
     tutor.setSubjects(new ArrayList<>());
+
+    Set<Authority> authorities = new HashSet<>();
+    Authority authority;
+    authority = new Authority();
+    authority.setUsername(tutor.getUsername());
+    authority.setAuthority("ROLE_TUTOR");
+    authority.setUser(tutor);
+    authorities.add(authority);
+    tutor.setAuthorities(authorities);
+
     return tutor;
   }
 
   private void storeProfilePictureAndAddToDatabase(Tutor tutor, MultipartFile profilePicture) {
-    fileSystemStorageService.storeProfilePicture(tutor.getId().toString(), profilePicture);
+//    fileSystemStorageService.storeProfilePicture(tutor.getId().toString(), profilePicture);
+    fileSystemStorageService.storeProfilePicture(tutor.getUsername(), profilePicture);
     String extension = Objects.requireNonNull(profilePicture.getOriginalFilename()).substring(
         profilePicture.getOriginalFilename().lastIndexOf("."));
-    tutor.setProfileImageUrl(tutor.getId().toString() + extension);
+//    tutor.setProfileImageUrl(tutor.getId().toString() + extension);
+    tutor.setProfileImageUrl(tutor.getUsername() + extension);
     tutorRepository.save(tutor);
   }
 
@@ -71,7 +80,7 @@ public class TutorServiceImpl implements TutorService {
 
   }
 
-  public Tutor updateTutor(UUID id, TutorRequest tutorRequest,
+  public Tutor updateTutor(String id, TutorRequest tutorRequest,
       MultipartFile profilePicture) {
 
     Tutor tutor = tutorRepository.findById(id)
@@ -96,7 +105,7 @@ public class TutorServiceImpl implements TutorService {
 
   }
 
-  public void deleteTutor(UUID id) {
+  public void deleteTutor(String id) {
     if (!tutorRepository.existsById(id)) {
       throw new UserNotFoundException("User not found with id: " + id);
     }
@@ -108,7 +117,7 @@ public class TutorServiceImpl implements TutorService {
         () -> new UserNotFoundException("User not found with username: " + username));
   }
 
-  public Tutor getTutorById(UUID id) {
+  public Tutor getTutorById(String id) {
     return tutorRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
         "User not found with id: " + id));
   }
@@ -121,7 +130,7 @@ public class TutorServiceImpl implements TutorService {
     return List.of();
   }
 
-  public Tutor updateTutorSubject(UUID id, UUID subjectId) {
+  public Tutor updateTutorSubject(String id, String subjectId) {
     return null;
   }
 }

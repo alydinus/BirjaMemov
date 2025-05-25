@@ -21,7 +21,7 @@ public class Ad {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "username", nullable = false)
     private User user;
 
     @Column(name = "title")

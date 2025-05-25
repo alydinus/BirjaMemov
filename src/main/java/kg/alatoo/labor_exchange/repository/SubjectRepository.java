@@ -1,10 +1,10 @@
 package kg.alatoo.labor_exchange.repository;
 
-import java.util.List;
-import java.util.UUID;
 import kg.alatoo.labor_exchange.entity.Subject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, UUID> {

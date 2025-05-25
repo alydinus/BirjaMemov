@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 public interface StudentService {
-    Student getStudentById(UUID id);
+    Student getStudentById(String id);
     void createStudent(StudentRequest studentRequest, MultipartFile profilePicture);
 }

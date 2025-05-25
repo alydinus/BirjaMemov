@@ -49,8 +49,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void save(ReviewRequest request) {
-        Tutor tutor = tutorService.getTutorById(UUID.fromString(request.tutorId()));
-        Student student = studentService.getStudentById(UUID.fromString(request.studentId()));
+        Tutor tutor = tutorService.getTutorById(request.tutorId());
+        Student student = studentService.getStudentById(request.studentId());
 
         Review review = new Review();
         review.setId(UUID.randomUUID());
@@ -71,8 +71,8 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         Review review = reviewOpt.get();
-        Tutor tutor = tutorService.getTutorById(UUID.fromString(request.tutorId()));
-        Student student = studentService.getStudentById(UUID.fromString(request.studentId()));
+        Tutor tutor = tutorService.getTutorById(request.tutorId());
+        Student student = studentService.getStudentById(request.studentId());
 
         review.setStudent(student);
         review.setTutor(tutor);

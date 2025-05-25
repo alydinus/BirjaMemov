@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/tutors")
@@ -30,7 +29,7 @@ public class TutorController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<TutorResponse> getTutorById(@PathVariable UUID id) {
+  public ResponseEntity<TutorResponse> getTutorById(@PathVariable String id) {
     return new ResponseEntity<>(tutorMapper.toResponse(tutorService.getTutorById(id)),
         HttpStatus.OK);
 
@@ -44,7 +43,7 @@ public class TutorController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TutorResponse> updateTutor(@PathVariable UUID id,
+  public ResponseEntity<TutorResponse> updateTutor(@PathVariable String id,
       @RequestParam(required = false) MultipartFile profilePicture,
       @RequestBody TutorRequest tutorRequest) {
     return new ResponseEntity<>(tutorMapper.toResponse(
@@ -52,7 +51,7 @@ public class TutorController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteTutor(@PathVariable UUID id) {
+  public ResponseEntity<String> deleteTutor(@PathVariable String id) {
     tutorService.deleteTutor(id);
     return new ResponseEntity<>("Репетитор успешно удален!", HttpStatus.NO_CONTENT);
   }

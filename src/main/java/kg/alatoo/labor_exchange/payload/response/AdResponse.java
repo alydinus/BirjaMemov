@@ -7,7 +7,7 @@ public record AdResponse(
         String userId,
         String title,
         String lessonName,
-        Integer hourlyPay,
+        Integer price,
         String description,
         Timestamp createdAt,
         String type
