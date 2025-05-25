@@ -1,10 +1,10 @@
 package kg.alatoo.labor_exchange.mapper;
 
-import java.util.List;
 import kg.alatoo.labor_exchange.entity.Subject;
-import kg.alatoo.labor_exchange.payload.request.SubjectRequest;
 import kg.alatoo.labor_exchange.payload.response.SubjectResponse;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class SubjectMapper {

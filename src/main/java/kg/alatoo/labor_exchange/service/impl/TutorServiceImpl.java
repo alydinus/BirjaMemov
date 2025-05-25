@@ -1,7 +1,6 @@
 package kg.alatoo.labor_exchange.service.impl;
 
 import kg.alatoo.labor_exchange.entity.Authority;
-import kg.alatoo.labor_exchange.entity.Subject;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
@@ -81,7 +80,7 @@ public class TutorServiceImpl implements TutorService {
 
   }
 
-  public Tutor updateTutor(UUID id, TutorRequest tutorRequest,
+  public Tutor updateTutor(String id, TutorRequest tutorRequest,
       MultipartFile profilePicture) {
 
     Tutor tutor = tutorRepository.findById(id)
@@ -106,7 +105,7 @@ public class TutorServiceImpl implements TutorService {
 
   }
 
-  public void deleteTutor(UUID id) {
+  public void deleteTutor(String id) {
     if (!tutorRepository.existsById(id)) {
       throw new UserNotFoundException("User not found with id: " + id);
     }
@@ -118,7 +117,7 @@ public class TutorServiceImpl implements TutorService {
         () -> new UserNotFoundException("User not found with username: " + username));
   }
 
-  public Tutor getTutorById(UUID id) {
+  public Tutor getTutorById(String id) {
     return tutorRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
         "User not found with id: " + id));
   }
@@ -131,7 +130,7 @@ public class TutorServiceImpl implements TutorService {
     return List.of();
   }
 
-  public Tutor updateTutorSubject(UUID id, UUID subjectId) {
+  public Tutor updateTutorSubject(String id, String subjectId) {
     return null;
   }
 }

@@ -1,8 +1,6 @@
 package kg.alatoo.labor_exchange.security;
 
 
-import java.util.List;
-import javax.sql.DataSource;
 import kg.alatoo.labor_exchange.security.filter.AuthenticationFilter;
 import kg.alatoo.labor_exchange.security.filter.AuthorizationFilter;
 import kg.alatoo.labor_exchange.security.utils.CustomLoginFailureHandler;
@@ -27,6 +25,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity

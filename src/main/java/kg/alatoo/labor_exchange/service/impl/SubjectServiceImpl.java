@@ -1,7 +1,5 @@
 package kg.alatoo.labor_exchange.service.impl;
 
-import java.util.List;
-import java.util.UUID;
 import kg.alatoo.labor_exchange.entity.Subject;
 import kg.alatoo.labor_exchange.exception.exceptions.NotFoundException;
 import kg.alatoo.labor_exchange.payload.request.SubjectRequest;
@@ -9,6 +7,9 @@ import kg.alatoo.labor_exchange.repository.SubjectRepository;
 import kg.alatoo.labor_exchange.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

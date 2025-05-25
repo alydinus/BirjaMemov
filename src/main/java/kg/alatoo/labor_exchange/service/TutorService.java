@@ -5,24 +5,23 @@ import kg.alatoo.labor_exchange.payload.request.TutorRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface TutorService {
 
   void createTutor(TutorRequest tutorRequest, MultipartFile profilePicture);
 
-  Tutor updateTutor(UUID id, TutorRequest tutorRequest, MultipartFile profilePicture);
+  Tutor updateTutor(String id, TutorRequest tutorRequest, MultipartFile profilePicture);
 
-  void deleteTutor(UUID id);
+  void deleteTutor(String id);
 
   Tutor getTutorByUsername(String username);
 
-  Tutor getTutorById(UUID id);
+  Tutor getTutorById(String id);
 
   List<Tutor> getAllTutors();
 
   List<Tutor> searchTutors(String query);
 
-  Tutor updateTutorSubject(UUID id, UUID subjectId);
+  Tutor updateTutorSubject(String id, String subjectId);
 
 }

@@ -24,7 +24,7 @@ public class StudentServiceImpl implements StudentService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Student getStudentById(UUID id) {
+    public Student getStudentById(String id) {
         return studentRepository.findById(id).get();
     }
 

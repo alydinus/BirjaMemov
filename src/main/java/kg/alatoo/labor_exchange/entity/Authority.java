@@ -3,8 +3,6 @@ package kg.alatoo.labor_exchange.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "authorities")
 @IdClass(AuthorityId.class)
