@@ -40,6 +40,7 @@ public class StudentServiceImpl implements StudentService {
         student.setRole(Role.STUDENT);
         student.setReviews(new ArrayList<>());
         student.setCreatedAt(LocalDateTime.now());
+        student.setAds(new ArrayList<>());
         return student;
     }
 

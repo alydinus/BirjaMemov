@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import kg.alatoo.labor_exchange.entity.Tutor;
+import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.EntityExists;
 
 public record AdRequest(
@@ -11,7 +12,7 @@ public record AdRequest(
         @NotNull
         @NotBlank
         @Size(max = 255)
-        String tutorId,
+        String userId,
 
         @NotNull
         @NotBlank
@@ -29,7 +30,10 @@ public record AdRequest(
         String lessonName,
 
         @NotNull
-        Integer hourlyPay
+        Integer hourlyPay,
+
+        @NotNull
+        Role type
 
 ) {
 }

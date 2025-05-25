@@ -58,7 +58,7 @@ public class SecurityConfig {
     http.sessionManagement(
         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    http.headers(headers -> headers.frameOptions().disable());// аналдин алыкулов найс комит на +172
+    http.headers(headers -> headers.frameOptions().disable());
 
     http.authorizeHttpRequests(request -> request
 

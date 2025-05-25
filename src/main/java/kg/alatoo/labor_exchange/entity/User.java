@@ -6,6 +6,7 @@ import kg.alatoo.labor_exchange.enumeration.Role;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -32,6 +33,9 @@ public abstract class User {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @OneToMany(mappedBy = "user")
+  private List<Ad> ads;
+
   @Column(name = "refresh_token")
   private String refreshToken;
 
@@ -50,7 +54,5 @@ public abstract class User {
   @Column(name = "enabled")
   private boolean isEnabled;
 
-  @OneToMany(mappedBy = "user")
-  private List<Ad> ads;
 
 }
