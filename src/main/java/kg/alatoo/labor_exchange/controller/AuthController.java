@@ -8,10 +8,16 @@ import kg.alatoo.labor_exchange.service.TutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -20,6 +26,29 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final TutorService tutorService;
     private final StudentService studentService;
+    private final AuthenticationManager authenticationManager;
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String,String>> login(@RequestParam String username, @RequestParam String password) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        username,
+                        password
+                )
+        );
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority> )userDetails.getAuthorities();
+        String accessToken = jwtUtil.generateToken(authorities, userDetails.getUsername());
+        String refreshToken = jwtUtil.generateRefreshToken(authorities,userDetails.getUsername());
+
+        Map<String,String> response = new HashMap<>();
+        response.put("access_token", accessToken);
+        response.put("refresh_token", refreshToken);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PostMapping("/refresh")
     public ResponseEntity<Map<String,String>> refreshToken(@RequestParam String refreshToken) {
