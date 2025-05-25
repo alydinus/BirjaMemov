@@ -9,13 +9,11 @@ import kg.alatoo.labor_exchange.exception.exceptions.EntityExists;
 
 public record ReviewRequest(
 
-        @EntityExists(entityClass = Tutor.class)
         @NotNull
         @NotBlank
         @Size(max = 255)
         String tutorId,
 
-        @EntityExists(entityClass = Student.class)
         @NotNull
         @NotBlank
         @Size(max = 255)

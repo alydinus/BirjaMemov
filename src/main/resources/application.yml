@@ -35,8 +35,7 @@ spring:
   mail:
     host: { GMAIL_HOST }
     port: { GMAIL_PORT }
-    username: sdfg
-#    username: { GMAIL_USERNAME }
+    username: { GMAIL_USERNAME }
     password: { GMAIL_PASSWORD }
     properties:
       mail.smtp.auth: true
@@ -45,7 +44,7 @@ spring:
 jwt:
   secret: { JWT_SECRET }
   expiration: { JWT_EXPIRATION }
-  refresh-exp: { JWT_REFRESH_EXPIRATION }
+  refresh-exp: { JWT_REF_EXPIRATION }
 
 
 storage:

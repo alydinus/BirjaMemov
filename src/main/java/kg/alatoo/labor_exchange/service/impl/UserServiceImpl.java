@@ -2,8 +2,10 @@ package kg.alatoo.labor_exchange.service.impl;
 
 import kg.alatoo.labor_exchange.entity.Student;
 import kg.alatoo.labor_exchange.entity.Tutor;
+import kg.alatoo.labor_exchange.entity.User;
 import kg.alatoo.labor_exchange.repository.StudentRepository;
 import kg.alatoo.labor_exchange.repository.TutorRepository;
+import kg.alatoo.labor_exchange.repository.UserRepository;
 import kg.alatoo.labor_exchange.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,13 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final TutorRepository tutorRepository;
     private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(TutorRepository tutorRepository, StudentRepository studentRepository) {
+    public UserServiceImpl(TutorRepository tutorRepository, StudentRepository studentRepository,
+        UserRepository userRepository) {
         this.tutorRepository = tutorRepository;
         this.studentRepository = studentRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -37,5 +42,10 @@ public class UserServiceImpl implements UserService {
         }
 
 
+    }
+
+    public User getUserByUsername(String username) {
+        return (User) userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
     }
 }
