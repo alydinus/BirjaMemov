@@ -51,12 +51,6 @@ public class TutorServiceImpl implements TutorService {
     tutor.setCreatedAt(LocalDateTime.now());
     tutor.setSubjects(new ArrayList<>());
 
-    tutor.setIsEmailVerified(false);
-    tutor.setIsTwoFactorAuthEnabled(false);
-
-    tutor.setVerificationCode(UUID.randomUUID().toString());
-    tutor.setVerificationCodeExpiration(Timestamp.valueOf(LocalDateTime.now().plusHours(2)));
-
     Set<Authority> authorities = new HashSet<>();
     Authority authority;
     authority = new Authority();
@@ -65,6 +59,11 @@ public class TutorServiceImpl implements TutorService {
     authority.setUser(tutor);
     authorities.add(authority);
     tutor.setAuthorities(authorities);
+
+    tutor.setIsEmailVerified(false);
+    tutor.setIsTwoFactorAuthEnabled(false);
+    tutor.setVerificationCode(UUID.randomUUID().toString());
+    tutor.setVerificationCodeExpiration(Timestamp.valueOf(LocalDateTime.now().plusHours(2)));
 
     emailService.sendSimpleMail(tutorRequest.email(), "Verification",
             "Verification code: " + tutor.getVerificationCode().toString() +
