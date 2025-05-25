@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import kg.alatoo.labor_exchange.security.filter.AuthenticationFilter;
 import kg.alatoo.labor_exchange.security.filter.AuthorizationFilter;
+import kg.alatoo.labor_exchange.security.utils.CustomLoginFailureHandler;
 import kg.alatoo.labor_exchange.security.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +35,7 @@ public class SecurityConfig {
 
   private final JwtUtil jwtUtil;
   private final AuthenticationConfiguration authenticationConfiguration;
+  private final CustomLoginFailureHandler customLoginFailureHandler;
 
   @Bean
   public UserDetailsService userDetailsService(DataSource dataSource) {
@@ -87,8 +89,10 @@ public class SecurityConfig {
         .failureUrl("/login?error"));
 
     http.formLogin(formLogin -> formLogin
-        .loginPage("/login")
-        .permitAll()
+            .loginPage("/login")
+            .defaultSuccessUrl("/")
+            .failureHandler(customLoginFailureHandler)
+            .permitAll()
     );
 
     http.logout(logout -> logout

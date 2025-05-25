@@ -1,5 +1,6 @@
 package kg.alatoo.labor_exchange.service.impl;
 
+import kg.alatoo.labor_exchange.entity.Authority;
 import kg.alatoo.labor_exchange.entity.Subject;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -49,14 +47,26 @@ public class TutorServiceImpl implements TutorService {
     tutor.setRole(Role.TUTOR);
     tutor.setCreatedAt(LocalDateTime.now());
     tutor.setSubjects(new ArrayList<>());
+
+    Set<Authority> authorities = new HashSet<>();
+    Authority authority;
+    authority = new Authority();
+    authority.setUsername(tutor.getUsername());
+    authority.setAuthority("ROLE_TUTOR");
+    authority.setUser(tutor);
+    authorities.add(authority);
+    tutor.setAuthorities(authorities);
+
     return tutor;
   }
 
   private void storeProfilePictureAndAddToDatabase(Tutor tutor, MultipartFile profilePicture) {
-    fileSystemStorageService.storeProfilePicture(tutor.getId().toString(), profilePicture);
+//    fileSystemStorageService.storeProfilePicture(tutor.getId().toString(), profilePicture);
+    fileSystemStorageService.storeProfilePicture(tutor.getUsername(), profilePicture);
     String extension = Objects.requireNonNull(profilePicture.getOriginalFilename()).substring(
         profilePicture.getOriginalFilename().lastIndexOf("."));
-    tutor.setProfileImageUrl(tutor.getId().toString() + extension);
+//    tutor.setProfileImageUrl(tutor.getId().toString() + extension);
+    tutor.setProfileImageUrl(tutor.getUsername() + extension);
     tutorRepository.save(tutor);
   }
 

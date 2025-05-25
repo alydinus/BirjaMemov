@@ -12,7 +12,8 @@ public class AdMapper {
     public AdResponse toResponse(Ad ad) {
         AdResponse response = new AdResponse(
                 ad.getId().toString(),
-                ad.getUser().getId().toString(),
+//                ad.getUser().getId().toString(),
+                ad.getUser().getUsername(),
                 ad.getTitle(),
                 ad.getSubject().getName(),
                 ad.getHourlyPay(),

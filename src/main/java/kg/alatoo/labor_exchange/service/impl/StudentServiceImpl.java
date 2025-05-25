@@ -1,5 +1,6 @@
 package kg.alatoo.labor_exchange.service.impl;
 
+import kg.alatoo.labor_exchange.entity.Authority;
 import kg.alatoo.labor_exchange.entity.Student;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.payload.request.StudentRequest;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,14 +40,26 @@ public class StudentServiceImpl implements StudentService {
         student.setReviews(new ArrayList<>());
         student.setCreatedAt(LocalDateTime.now());
         student.setAds(new ArrayList<>());
+
+        Set<Authority> authorities = new HashSet<>();
+        Authority authority;
+        authority = new Authority();
+        authority.setUsername(student.getUsername());
+        authority.setAuthority("ROLE_STUDENT");
+        authority.setUser(student);
+        authorities.add(authority);
+        student.setAuthorities(authorities);
+
         return student;
     }
 
     private void storeProfilePictureAndAddToDatabase(Student student, MultipartFile profilePicture) {
-        fileSystemStorageService.storeProfilePicture(student.getId().toString(), profilePicture);
+//        fileSystemStorageService.storeProfilePicture(student.getId().toString(), profilePicture);
+        fileSystemStorageService.storeProfilePicture(student.getUsername(), profilePicture);
         String extension = Objects.requireNonNull(profilePicture.getOriginalFilename()).substring(
                 profilePicture.getOriginalFilename().lastIndexOf("."));
-        student.setProfileImageUrl(student.getId().toString() + extension);
+//        student.setProfileImageUrl(student.getId().toString() + extension);
+        student.setProfileImageUrl(student.getUsername() + extension);
         studentRepository.save(student);
     }
 

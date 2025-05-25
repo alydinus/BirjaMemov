@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class TutorMapper {
   public TutorResponse toResponse(Tutor tutor) {
     return new TutorResponse(
-        tutor.getId().toString(),
+//        tutor.getId().toString(),
         tutor.getEmail(),
         tutor.getFirstName(),
         tutor.getLastName(),

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -14,13 +15,17 @@ import java.util.UUID;
 @Data
 public abstract class User {
 
+//  @Id
+//  @Column(name = "id")
+//  @GeneratedValue(strategy = GenerationType.UUID)
+//  private UUID id;
+//
+//  @Column(name = "username", nullable = false, unique = true, length = 50)
+//  private String username;
   @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
-
-  @Column(name = "username", nullable = false, unique = true, length = 50)
+  @Column(name = "username")
   private String username;
+
 
   @Column(name = "email", nullable = false, length = 60)
   private String email;
@@ -34,6 +39,9 @@ public abstract class User {
 
   @OneToMany(mappedBy = "user")
   private List<Ad> ads;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  private Set<Authority> authorities;
 
   @Column(name = "refresh_token")
   private String refreshToken;
