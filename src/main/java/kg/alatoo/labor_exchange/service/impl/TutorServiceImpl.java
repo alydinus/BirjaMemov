@@ -8,6 +8,7 @@ import kg.alatoo.labor_exchange.payload.request.TutorRequest;
 import kg.alatoo.labor_exchange.repository.TutorRepository;
 import kg.alatoo.labor_exchange.service.TutorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ public class TutorServiceImpl implements TutorService {
   private final TutorRepository tutorRepository;
   private final FileSystemStorageService fileSystemStorageService;
   private final SubjectServiceImpl subjectService;
+  private final PasswordEncoder passwordEncoder;
 
 
   private Tutor createTutor(TutorRequest tutorRequest) {
@@ -40,7 +42,7 @@ public class TutorServiceImpl implements TutorService {
     tutor.setLastName(tutorRequest.lastName());
     tutor.setUsername(tutorRequest.username());
     tutor.setEmail(tutorRequest.email());
-    tutor.setPassword(tutorRequest.password());
+    tutor.setPassword(passwordEncoder.encode(tutorRequest.password()));
     tutor.setDescription(tutorRequest.description());
     tutor.setExperienceYears(tutorRequest.experienceYears());
     tutor.setRole(Role.TUTOR);

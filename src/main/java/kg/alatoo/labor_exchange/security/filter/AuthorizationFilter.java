@@ -37,7 +37,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             request.getServletPath().startsWith("/auth") ||
             (request.getServletPath().startsWith("/api/ads") && request.getMethod().equals("GET")) ||
             (request.getServletPath().startsWith("/api/subjects") && request.getMethod().equals("GET")) ||
-            request.getServletPath().startsWith("/api/auth") ||
+            request.getServletPath().startsWith("/api/auth")
         ) {
             filterChain.doFilter(request, response);
         }

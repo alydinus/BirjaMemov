@@ -7,6 +7,7 @@ import kg.alatoo.labor_exchange.repository.StudentRepository;
 import kg.alatoo.labor_exchange.service.StorageService;
 import kg.alatoo.labor_exchange.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final StorageService fileSystemStorageService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Student getStudentById(UUID id) {
@@ -34,7 +36,7 @@ public class StudentServiceImpl implements StudentService {
         student.setLastName(studentRequest.lastName());
         student.setUsername(studentRequest.username());
         student.setEmail(studentRequest.email());
-        student.setPassword(studentRequest.password());
+        student.setPassword(passwordEncoder.encode(studentRequest.password()));
         student.setRole(Role.STUDENT);
         student.setReviews(new ArrayList<>());
         student.setCreatedAt(LocalDateTime.now());
