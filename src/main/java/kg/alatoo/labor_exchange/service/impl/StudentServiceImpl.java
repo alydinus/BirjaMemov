@@ -5,6 +5,7 @@ import kg.alatoo.labor_exchange.entity.Student;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.payload.request.StudentRequest;
 import kg.alatoo.labor_exchange.repository.StudentRepository;
+import kg.alatoo.labor_exchange.service.EmailService;
 import kg.alatoo.labor_exchange.service.StorageService;
 import kg.alatoo.labor_exchange.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,6 +24,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final StorageService fileSystemStorageService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Override
     public Student getStudentById(String id) {
@@ -49,6 +52,17 @@ public class StudentServiceImpl implements StudentService {
         authority.setUser(student);
         authorities.add(authority);
         student.setAuthorities(authorities);
+
+        student.setIsEmailVerified(false);
+        student.setIsTwoFactorAuthEnabled(false);
+        student.setVerificationCode(UUID.randomUUID().toString());
+        student.setVerificationCodeExpiration(Timestamp.valueOf(LocalDateTime.now().plusHours(2)));
+
+        emailService.sendSimpleMail(studentRequest.email(), "Verification",
+                "Verification code: " + student.getVerificationCode().toString() +
+                        "\n Link Front ... " +
+                        "\n Link/Postman request: POST http://localhost:8081/api/auth/verify?token=" + student.getVerificationCode());
+
 
         return student;
     }
