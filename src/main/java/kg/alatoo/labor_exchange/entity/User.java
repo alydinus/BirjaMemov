@@ -1,10 +1,10 @@
 package kg.alatoo.labor_exchange.entity;
 
 import jakarta.persistence.*;
-import java.util.List;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +25,6 @@ public abstract class User {
   @Id
   @Column(name = "username")
   private String username;
-
 
   @Column(name = "email", nullable = false, length = 60)
   private String email;
@@ -57,6 +56,24 @@ public abstract class User {
 
   @Column(name = "profile_image_url")
   private String profileImageUrl;
+
+  @Column(name = "is_email_verified")
+  private Boolean isEmailVerified;
+
+  @Column(name = "verification_code")
+  private String verificationCode;
+
+  @Column(name = "verification_code_expiration")
+  private Timestamp verificationCodeExpiration;
+
+  @Column(name = "is_two_factor_auth_enabled")
+  private Boolean isTwoFactorAuthEnabled;
+
+  @Column(name = "two_factor_code_expiration")
+  private Timestamp twoFactorCodeExpiration;
+
+  @Column(name = "two_factor_code")
+  private String twoFactorCode;
 
   @Column(name = "enabled")
   private boolean isEnabled;

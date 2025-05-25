@@ -1,5 +1,7 @@
 package kg.alatoo.labor_exchange.exception;
 
+import jakarta.servlet.http.HttpServletResponse;
+import kg.alatoo.labor_exchange.exception.exceptions.EmailTokenExpiredException;
 import kg.alatoo.labor_exchange.exception.exceptions.NotFoundException;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +52,15 @@ public class GlobalExceptionHandler {
         ex.printStackTrace();
         log.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(EmailTokenExpiredException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> handleEmailTokenExpiredException(HttpServletResponse response, EmailTokenExpiredException e) throws IOException {
+        e.printStackTrace();
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
     }
 
 }

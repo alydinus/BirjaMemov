@@ -3,6 +3,7 @@ package kg.alatoo.labor_exchange.controller;
 import kg.alatoo.labor_exchange.payload.request.StudentRequest;
 import kg.alatoo.labor_exchange.payload.request.TutorRequest;
 import kg.alatoo.labor_exchange.security.utils.JwtUtil;
+import kg.alatoo.labor_exchange.service.EmailService;
 import kg.alatoo.labor_exchange.service.StudentService;
 import kg.alatoo.labor_exchange.service.TutorService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class AuthController {
     private final TutorService tutorService;
     private final StudentService studentService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String,String>> login(@RequestParam String username, @RequestParam String password) {
@@ -69,6 +71,12 @@ public class AuthController {
                                            @RequestParam(required = false) MultipartFile profilePicture) {
         studentService.createStudent(request, profilePicture);
         return new ResponseEntity<>("Register", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestParam String token) {
+        emailService.verifyToken(token);
+        return new ResponseEntity<>("Verified successfully", HttpStatus.OK);
     }
 
 }

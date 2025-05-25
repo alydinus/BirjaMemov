@@ -1,17 +1,20 @@
 package kg.alatoo.labor_exchange.service.impl;
 
+import jakarta.persistence.Column;
 import kg.alatoo.labor_exchange.entity.Authority;
 import kg.alatoo.labor_exchange.entity.Tutor;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.UserNotFoundException;
 import kg.alatoo.labor_exchange.payload.request.TutorRequest;
 import kg.alatoo.labor_exchange.repository.TutorRepository;
+import kg.alatoo.labor_exchange.service.EmailService;
 import kg.alatoo.labor_exchange.service.TutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -23,6 +26,7 @@ public class TutorServiceImpl implements TutorService {
   private final FileSystemStorageService fileSystemStorageService;
   private final SubjectServiceImpl subjectService;
   private final PasswordEncoder passwordEncoder;
+  private final EmailService emailService;
 
 
   private Tutor createTutor(TutorRequest tutorRequest) {
@@ -47,6 +51,12 @@ public class TutorServiceImpl implements TutorService {
     tutor.setCreatedAt(LocalDateTime.now());
     tutor.setSubjects(new ArrayList<>());
 
+    tutor.setIsEmailVerified(false);
+    tutor.setIsTwoFactorAuthEnabled(false);
+
+    tutor.setVerificationCode(UUID.randomUUID().toString());
+    tutor.setVerificationCodeExpiration(Timestamp.valueOf(LocalDateTime.now().plusHours(2)));
+
     Set<Authority> authorities = new HashSet<>();
     Authority authority;
     authority = new Authority();
@@ -55,6 +65,11 @@ public class TutorServiceImpl implements TutorService {
     authority.setUser(tutor);
     authorities.add(authority);
     tutor.setAuthorities(authorities);
+
+    emailService.sendSimpleMail(tutorRequest.email(), "Verification",
+            "Verification code: " + tutor.getVerificationCode().toString() +
+                    "\n Link Front ... " +
+                    "\n Link/Postman request: POST http://localhost:8081/api/auth/verify?token=" + tutor.getVerificationCode());
 
     return tutor;
   }

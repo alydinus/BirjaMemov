@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class  JwtUtil {
+public class JwtUtil {
 
     private final UserService userService;
 
@@ -23,7 +23,7 @@ public class  JwtUtil {
     @Value("${JWT_EXPIRATION}")
     private long jwtExp;
 
-    @Value("${JWT_REFRESH_EXPIRATION}")
+    @Value("${JWT_REF_EXPIRATION}")
     private long jwtRefreshExp;
 
     public JwtUtil(UserService userService) {
