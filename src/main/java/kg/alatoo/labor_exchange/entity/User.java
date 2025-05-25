@@ -28,7 +28,7 @@ public abstract class User {
   private String password;
 
   @Column(name = "role", nullable = false)
-  @Enumerated
+  @Enumerated(EnumType.STRING)
   private Role role;
 
   @Column(name = "refresh_token")
