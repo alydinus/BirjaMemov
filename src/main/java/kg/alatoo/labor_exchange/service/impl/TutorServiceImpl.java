@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -30,12 +31,12 @@ public class TutorServiceImpl implements TutorService {
   private Tutor createTutor(TutorRequest tutorRequest) {
     Tutor tutor = new Tutor();
 
-    if (!tutorRequest.subjects().isEmpty()) {
-      List<Subject> tutorSubjects = tutorRequest.subjects().stream()
-          .map(subjectService::getSubjectByName)
-          .toList();
-      tutor.setSubjects(tutorSubjects);
-    }
+//    if (!tutorRequest.subjects().isEmpty()) {
+//      List<Subject> tutorSubjects = tutorRequest.subjects().stream()
+//          .map(subjectService::getSubjectByName)
+//          .toList();
+//      tutor.setSubjects(tutorSubjects);
+//    }
 
     tutor.setEnabled(true);
     tutor.setFirstName(tutorRequest.firstName());
@@ -47,6 +48,7 @@ public class TutorServiceImpl implements TutorService {
     tutor.setExperienceYears(tutorRequest.experienceYears());
     tutor.setRole(Role.TUTOR);
     tutor.setCreatedAt(LocalDateTime.now());
+    tutor.setSubjects(new ArrayList<>());
     return tutor;
   }
 
@@ -83,6 +85,7 @@ public class TutorServiceImpl implements TutorService {
     tutor.setDescription(tutorRequest.description());
     tutor.setExperienceYears(tutorRequest.experienceYears());
     tutor.setRole(Role.TUTOR);
+    tutor.setRating(-1D);
     tutorRepository.save(tutor);
 
 
