@@ -55,7 +55,7 @@ public class SecurityConfig {
     http.cors((cors -> cors.configurationSource(corsConfigurationSource())));
 
     http.csrf(csrf -> csrf
-        .ignoringRequestMatchers("/api/**", "/login", "/verify/2fa", "/api/auth/**")
+        .ignoringRequestMatchers("/oauth2/**","/api/**", "/login","/login/**", "/verify/2fa", "/api/auth/**")
         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")));
 
     http.sessionManagement(
@@ -80,14 +80,13 @@ public class SecurityConfig {
 
 //        http.oauth2Login(Customizer.withDefaults());
     http.oauth2Login(oauth2 -> oauth2
-        .loginPage("/login")
         .authorizationEndpoint(authorization -> authorization
             .baseUri("/oauth2/authorization"))
         .redirectionEndpoint(redirection -> redirection
             .baseUri("/login/oauth2/code/*")
         )
         .defaultSuccessUrl("/", true)
-        .failureUrl("/login?error"));
+        .failureHandler(customLoginFailureHandler));
 
     http.formLogin(formLogin -> formLogin
             .loginPage("/login")

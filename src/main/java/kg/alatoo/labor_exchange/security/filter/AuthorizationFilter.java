@@ -31,10 +31,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-
-        if (request.getServletPath().equals("/login") ||
+        System.out.println(request.getRequestURI());
+        if (request.getServletPath().startsWith("/login") ||
             request.getServletPath().startsWith("/h2-console") ||
             request.getServletPath().startsWith("/auth") ||
+            request.getServletPath().startsWith("/oauth2") ||
             (request.getServletPath().startsWith("/api/ads") && request.getMethod().equals("GET")) ||
             (request.getServletPath().startsWith("/api/subjects") && request.getMethod().equals("GET")) ||
             request.getServletPath().startsWith("/api/auth")
