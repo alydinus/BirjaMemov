@@ -32,7 +32,7 @@ public class AdServiceImpl implements AdService {
     public void save(AdRequest request) {
         Ad ad = new Ad();
         Tutor tutor = tutorService.getTutorById(UUID.fromString(request.tutorId()));
-        ad.setTutor(tutor);
+        ad.setUser(tutor);
         ad.setTitle(request.title());
         ad.setDescription(request.description());
         ad.setSubject(subjectService.getSubjectByName(request.lessonName()));
@@ -44,7 +44,7 @@ public class AdServiceImpl implements AdService {
 
         Tutor tutor = tutorService.getTutorById(UUID.fromString(request.tutorId()));
 
-        ad.setTutor(tutor);
+        ad.setUser(tutor);
         ad.setTitle(request.title());
         ad.setDescription(request.description());
         ad.setSubject(subjectService.getSubjectByName(request.lessonName()));

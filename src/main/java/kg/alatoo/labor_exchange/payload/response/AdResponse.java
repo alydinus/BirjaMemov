@@ -4,11 +4,12 @@ import java.sql.Timestamp;
 
 public record AdResponse(
         String id,
-        String tutorId,
+        String userId,
         String title,
         String lessonName,
         Integer hourlyPay,
         String description,
-        Timestamp createdAt
+        Timestamp createdAt,
+        String type
 ) {
 }

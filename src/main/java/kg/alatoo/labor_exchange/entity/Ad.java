@@ -21,8 +21,8 @@ public class Ad {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "tutor_id", nullable = false)
-    private Tutor tutor;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "title")
     private String title;

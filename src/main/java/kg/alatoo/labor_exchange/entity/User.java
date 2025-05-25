@@ -1,6 +1,7 @@
 package kg.alatoo.labor_exchange.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import lombok.Data;
 
@@ -46,8 +47,10 @@ public abstract class User {
   @Column(name = "profile_image_url")
   private String profileImageUrl;
 
-
   @Column(name = "enabled")
   private boolean isEnabled;
+
+  @OneToMany(mappedBy = "user")
+  private List<Ad> ads;
 
 }

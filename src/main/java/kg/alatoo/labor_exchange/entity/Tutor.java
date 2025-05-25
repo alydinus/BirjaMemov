@@ -27,9 +27,6 @@ public class Tutor extends User {
   @Column(name = "experience_years")
   private Integer experienceYears;
 
-  @OneToMany(mappedBy = "tutor")
-  private List<Ad> ads;
-
   @ManyToMany
   @JoinTable(
       name = "tutor_subjects",
