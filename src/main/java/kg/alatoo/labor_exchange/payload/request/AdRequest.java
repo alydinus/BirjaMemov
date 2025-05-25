@@ -4,15 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import kg.alatoo.labor_exchange.entity.Tutor;
+import kg.alatoo.labor_exchange.entity.User;
 import kg.alatoo.labor_exchange.enumeration.Role;
 import kg.alatoo.labor_exchange.exception.exceptions.EntityExists;
 
 public record AdRequest(
-        @EntityExists(entityClass = Tutor.class)
+        @EntityExists(entityClass = User.class)
         @NotNull
         @NotBlank
         @Size(max = 255)
-        String userId,
+        String username,
 
         @NotNull
         @NotBlank

@@ -42,9 +42,9 @@ spring:
       mail.smtp.starttls.enable: true
 
 jwt:
-  secret: afsdkhjasdjhkfhadsjklghadslkjghaskdjghakjsd
-  expiration: 1800000
-  refresh-exp: 2629800000
+  secret: { JWT_SECRET }
+  expiration: { JWT_EXPIRATION }
+  refresh-exp: { JWT_REFRESH_EXPIRATION }
 
 
 storage:

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public record AdResponse(
         String id,
-        String userId,
+        String username,
         String title,
         String lessonName,
         Integer price,

@@ -13,17 +13,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class JwtUtil {
+public class  JwtUtil {
 
     private final UserService userService;
 
-    @Value("${jwt.secret}")
+    @Value("${JWT_SECRET}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration}")
+    @Value("${JWT_EXPIRATION}")
     private long jwtExp;
 
-    @Value("${jwt.refresh-exp}")
+    @Value("${JWT_REFRESH_EXPIRATION}")
     private long jwtRefreshExp;
 
     public JwtUtil(UserService userService) {

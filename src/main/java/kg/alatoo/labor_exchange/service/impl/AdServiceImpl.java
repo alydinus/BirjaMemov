@@ -31,7 +31,7 @@ public class AdServiceImpl implements AdService {
 
     public void save(AdRequest request) {
         Ad ad = new Ad();
-        Tutor tutor = tutorService.getTutorById(request.userId());
+        Tutor tutor = tutorService.getTutorByUsername(request.username());
         ad.setUser(tutor);
         ad.setTitle(request.title());
         ad.setDescription(request.description());
@@ -42,7 +42,7 @@ public class AdServiceImpl implements AdService {
     public void update(UUID id, AdRequest request) {
         Ad ad = adRepository.findById(id).orElseThrow(() -> new NotFoundException("Ad not found with id: " + id));
 
-        Tutor tutor = tutorService.getTutorById(request.userId());
+        Tutor tutor = tutorService.getTutorByUsername(request.username());
 
         ad.setUser(tutor);
         ad.setTitle(request.title());
