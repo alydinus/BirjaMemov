@@ -32,7 +32,7 @@ INSERT INTO ads (
     is_active,
     subject_id,
     title,
-    tutor_id
+    user_id
 )
 VALUES
     (
