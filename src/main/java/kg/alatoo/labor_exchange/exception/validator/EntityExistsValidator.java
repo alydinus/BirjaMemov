@@ -9,12 +9,12 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EntityExistsValidator implements ConstraintValidator<EntityExists, Long> {
+public class EntityExistsValidator implements ConstraintValidator<EntityExists, String> {
 
-    private static final Map<Class<?>, CrudRepository<?, Long>> REPOSITORY_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, CrudRepository<?, String>> REPOSITORY_CACHE = new ConcurrentHashMap<>();
 
     @Autowired
-    private Map<String, CrudRepository<?, Long>> repositories;
+    private Map<String, CrudRepository<?, String>> repositories;
 
     private Class<?> entityClass;
 
@@ -24,12 +24,12 @@ public class EntityExistsValidator implements ConstraintValidator<EntityExists, 
     }
 
     @Override
-    public boolean isValid(Long id, ConstraintValidatorContext context) {
+    public boolean isValid(String id, ConstraintValidatorContext context) {
         if (id == null) {
             return true;
         }
 
-        CrudRepository<?, Long> repository = REPOSITORY_CACHE.computeIfAbsent(
+        CrudRepository<?, String> repository = REPOSITORY_CACHE.computeIfAbsent(
                 entityClass,
                 clazz -> repositories.values().stream()
                         .filter(r -> clazz.equals(getEntityClassFromRepository(r)))
