@@ -6,6 +6,7 @@ import kg.alatoo.labor_exchange.security.utils.JwtUtil;
 import kg.alatoo.labor_exchange.service.EmailService;
 import kg.alatoo.labor_exchange.service.StudentService;
 import kg.alatoo.labor_exchange.service.TutorService;
+import kg.alatoo.labor_exchange.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +33,7 @@ public class AuthController {
     private final StudentService studentService;
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String,String>> login(@RequestParam String username, @RequestParam String password) {
@@ -78,5 +82,11 @@ public class AuthController {
         emailService.verifyToken(token);
         return new ResponseEntity<>("Verified successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/oauth2/success")
+    public ResponseEntity<Map <String, Object>> user(@RequestParam String token ) {
+        return new ResponseEntity<>(userService.sideAuth(token),HttpStatus.OK);
+    }
+
 
 }

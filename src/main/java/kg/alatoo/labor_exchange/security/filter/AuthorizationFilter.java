@@ -45,8 +45,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         else {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             try {
-                if (authorizationHeader == null) {
+                if (authorizationHeader == null && request.getServletPath().startsWith("/api")) {
                     throw new ServletException("Authorization header is null");
+                } else if(authorizationHeader == null){
+                    filterChain.doFilter(request, response);
+                    return;
                 } else {
                     String token = authorizationHeader.substring("Bearer ".length());
 

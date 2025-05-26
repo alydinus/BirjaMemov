@@ -4,6 +4,7 @@ package kg.alatoo.labor_exchange.security;
 import kg.alatoo.labor_exchange.security.filter.AuthenticationFilter;
 import kg.alatoo.labor_exchange.security.filter.AuthorizationFilter;
 import kg.alatoo.labor_exchange.security.utils.CustomLoginFailureHandler;
+import kg.alatoo.labor_exchange.security.utils.CustomOauthSuccesshandler;
 import kg.alatoo.labor_exchange.security.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +38,7 @@ public class SecurityConfig {
   private final JwtUtil jwtUtil;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomLoginFailureHandler customLoginFailureHandler;
+  private final CustomOauthSuccesshandler customOauthSuccesshandler;
 
   @Bean
   public UserDetailsService userDetailsService(DataSource dataSource) {
@@ -66,7 +68,7 @@ public class SecurityConfig {
     http.authorizeHttpRequests(request -> request
 
             .requestMatchers("/", "/registration/**", "/css/**", "/images/**",
-                "/api/auth/**", "/login/**", "/oauth2/**", "/verify/**", "auth/**", "/favicon/**")
+                "/api/auth/**", "/login/**", "/oauth2/**", "/verify/**", "/auth/**", "/favicon/**")
             .permitAll()
 
             .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
@@ -75,18 +77,21 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/api/subjects/**").permitAll()
 
             .anyRequest().authenticated()
-//                .anyRequest().permitAll()
     );
 
-//        http.oauth2Login(Customizer.withDefaults());
     http.oauth2Login(oauth2 -> oauth2
-        .authorizationEndpoint(authorization -> authorization
-            .baseUri("/oauth2/authorization"))
-        .redirectionEndpoint(redirection -> redirection
-            .baseUri("/login/oauth2/code/*")
-        )
-        .defaultSuccessUrl("/", true)
+
+            .authorizationEndpoint(authorization -> authorization
+                    .baseUri("/oauth2/authorization"))
+
+            .redirectionEndpoint(redirection -> redirection
+                    .baseUri("/login/oauth2/code/*")
+            )
+            .successHandler(customOauthSuccesshandler)
+
+//          .defaultSuccessUrl("http://localhost:8080/oauth-success", true)
         .failureHandler(customLoginFailureHandler));
+
 
     http.formLogin(formLogin -> formLogin
             .loginPage("/login")
@@ -104,6 +109,8 @@ public class SecurityConfig {
 
     return http.build();
   }
+
+
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
